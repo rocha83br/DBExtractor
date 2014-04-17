@@ -272,7 +272,7 @@ namespace System.Data.Extraction
                 {
                     var dataColumnConfig = string.Concat("[DataColumn(ColumnName = \"", attrib.AttributeColumn, "\"",
                                                          attrib.PrimaryKey ? ", PrimaryKey = true" : string.Empty,
-                                                         attrib.AutoNumber ? ", AutoNumering = true" : string.Empty,
+                                                         attrib.AutoNumber ? ", AutoNumbering = true" : string.Empty,
                                                          attrib.Required ? ", Required = true" : string.Empty, ")]");
 
                     annotationList.Add(dataColumnConfig);
@@ -301,10 +301,10 @@ namespace System.Data.Extraction
                             && !string.IsNullOrEmpty(attrib.DisplayName))
                         {
                             var strLenMsg = string.Format(modelPreConfig.DefaultStringLengthMessage, attrib.DisplayName);
-                            annotationList.Add(string.Concat("[StringLength(\"", attrib.StringLength.ToString(), ", ErrorMessage = \"", strLenMsg, "\")]"));
+                            annotationList.Add(string.Concat("[StringLength(", attrib.StringLength.ToString(), ", ErrorMessage = \"", strLenMsg, "\")]"));
                         }
                         else
-                            annotationList.Add(string.Concat("[StringLength(\"", attrib.StringLength.ToString(), "\")]"));
+                            annotationList.Add(string.Concat("[StringLength(", attrib.StringLength.ToString(), ")]"));
                 }
 
                 attrib.Annotations = annotationList;

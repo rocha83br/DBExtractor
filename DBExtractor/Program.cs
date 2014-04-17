@@ -67,6 +67,9 @@ namespace System.Data.Extraction
             Console.WriteLine("-w : Extract with WCF contract enable");
             Console.WriteLine("-j : Extract with JSON minimification enable");
             Console.WriteLine();
+            Console.WriteLine("-c  : Extract with RopSql based Controller");
+            Console.WriteLine("-ca : Extract with RopSql based Controller");
+            Console.WriteLine("      and InMemProfile Access Control");
             Console.Read();
         }
 
