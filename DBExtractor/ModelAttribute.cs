@@ -10,6 +10,7 @@ namespace System.Data.Extraction
         public bool PrimaryKey { get; set; }
         public bool Required { get; set; }
         public bool AutoNumber { get; set; }
+        public bool Composition { get; set; }
         public int StringLength { get; set; }
         public string AttributeName { get; set; }
         public string AttributeType { get; set; }

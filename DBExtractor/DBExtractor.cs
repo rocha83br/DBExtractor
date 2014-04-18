@@ -100,11 +100,20 @@ namespace System.Data.Extraction
             return result;
         }
 
+        private ModelAttribute getCompositionEntity(string attribName, string attribColumn)
+        {
+            return new ModelAttribute() { Composition = true,
+                                          AttributeName = getPascalCase(attribName.Replace("Id", string.Empty)),
+                                          AttributeType = getPascalCase(attribName.Replace("Id", string.Empty)),
+                                          AttributeColumn = attribColumn };
+        }
+
         private List<ModelAttribute> getScriptEntityAttributes(string scriptContent)
         {
             var result = new List<ModelAttribute>();
             var attribList = scriptContent.Substring((scriptContent.IndexOf('(') + 1));
-            
+            var composition = new List<ModelAttribute>();
+
             if (attribList.Contains("CONSTRAINT"))
                 attribList = attribList.Substring(0, attribList.IndexOf("CONSTRAINT"));
             else
@@ -130,9 +139,14 @@ namespace System.Data.Extraction
                 newAttribute.StringLength = getAttribStringLen(attribConfigArray[1]);
 
                 result.Add(newAttribute);
+
+                if (newAttribute.AttributeName.StartsWith("Id")
+                    && (newAttribute.AttributeName.Length > 2))
+                    composition.Add(getCompositionEntity(newAttribute.AttributeName, newAttribute.AttributeColumn));
             }
 
             setPrimaryKeyAttribute(scriptContent, ref result);
+            result.AddRange(composition);
 
             return result;
         }
@@ -198,7 +212,8 @@ namespace System.Data.Extraction
         {
             string constraintRange = string.Empty;
 
-            if (scriptContent.Contains("CONSTRAINT"))
+            if (scriptContent.Contains("CONSTRAINT")
+                && scriptContent.IndexOf("CONSTRAINT") < scriptContent.IndexOf("PRIMARY KEY"))
             {
                 constraintRange = scriptContent.Substring(scriptContent.IndexOf("PRIMARY KEY") + "PRIMARY KEY".Length);
                 constraintRange = constraintRange.Substring(0, constraintRange.IndexOf("ASC"));
@@ -268,7 +283,7 @@ namespace System.Data.Extraction
                 if (!string.IsNullOrEmpty(attrib.DisplayName))
                     annotationList.Add(string.Concat("[DisplayName(\"", attrib.DisplayName, "\")]"));
 
-                if (modelPreConfig.RopSqlEnable)
+                if (modelPreConfig.RopSqlEnable && !attrib.Composition)
                 {
                     var dataColumnConfig = string.Concat("[DataColumn(ColumnName = \"", attrib.AttributeColumn, "\"",
                                                          attrib.PrimaryKey ? ", PrimaryKey = true" : string.Empty,
@@ -305,6 +320,15 @@ namespace System.Data.Extraction
                         }
                         else
                             annotationList.Add(string.Concat("[StringLength(", attrib.StringLength.ToString(), ")]"));
+                }
+
+                if (attrib.Composition)
+                {
+                    StringBuilder compositAnnot = new StringBuilder();
+                    compositAnnot.AppendLine("[RelatedEntity(Cardinality = RelationCardinality.OneToOne,");
+                    compositAnnot.AppendLine(string.Concat("\t\t\t\t\t   ForeignKeyAttribute = \"", attrib.AttributeColumn, "\","));
+                    compositAnnot.Append("\t\t\t\t\t   RecordableComposition = false)]"); 
+                    annotationList.Add(compositAnnot.ToString());
                 }
 
                 attrib.Annotations = annotationList;
