@@ -22,7 +22,7 @@ namespace {0}
 { 
     public class {1}Controller : Controller
     {
-        private RopSqlAdapter persistAdapter = new RopSqlAdapter();
+        private RopSqlDataAdapter persistAdapter = new RopSqlDataAdapter();
         
         public ViewResult Index()
         {
@@ -109,7 +109,7 @@ namespace {0}
 { 
     public class {1}Controller : Controller
     {
-        private RopSqlAdapter persistAdapter = new RopSqlAdapter();
+        private RopSqlDataAdapter persistAdapter = new RopSqlDataAdapter();
         
         public ViewResult Index()
         {
