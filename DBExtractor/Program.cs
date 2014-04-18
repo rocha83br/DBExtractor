@@ -58,7 +58,7 @@ namespace System.Data.Extraction
             Console.WriteLine();
             Console.WriteLine("Use :");
             Console.WriteLine("-----------------------------------------------------------");
-            Console.WriteLine("DBExtractor [inputfile] [modelname] [outputfile] parameters");
+            Console.WriteLine("DBExtractor [inputfile] [modelname] parameters");
             Console.WriteLine();
             Console.WriteLine("Parameters :");
             Console.WriteLine("-s : Extract with serialization enable");

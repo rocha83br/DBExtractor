@@ -326,7 +326,7 @@ namespace System.Data.Extraction
                 {
                     StringBuilder compositAnnot = new StringBuilder();
                     compositAnnot.AppendLine("[RelatedEntity(Cardinality = RelationCardinality.OneToOne,");
-                    compositAnnot.AppendLine(string.Concat("\t\t\t\t\t   ForeignKeyAttribute = \"", attrib.AttributeColumn, "\","));
+                    compositAnnot.AppendLine(string.Concat("\t\t\t\t\t   ForeignKeyAttribute = \"", attrib.AttributeName, "\","));
                     compositAnnot.Append("\t\t\t\t\t   RecordableComposition = false)]"); 
                     annotationList.Add(compositAnnot.ToString());
                 }
