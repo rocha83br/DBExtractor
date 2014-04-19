@@ -20,7 +20,7 @@ using System.Security.InMemProfile;
 
 namespace {0}
 { 
-    public class {1}Controller : Controller
+    {2}public class {1}Controller : Controller
     {
         private RopSqlDataAdapter persistAdapter = new RopSqlDataAdapter();
         
@@ -107,7 +107,7 @@ using System.Security.InMemProfile;
 
 namespace {0}
 { 
-    public class {1}Controller : Controller
+    {2}public class {1}Controller : Controller
     {
         private RopSqlDataAdapter persistAdapter = new RopSqlDataAdapter();
         

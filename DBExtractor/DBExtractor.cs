@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Data.Extraction.Messages;
 
 namespace System.Data.Extraction
 {
@@ -186,12 +187,19 @@ namespace System.Data.Extraction
             return classBody.ToString();
         }
 
-        private string compositeController(string entityName, bool inMemProfileReady)
+        private string compositeController(string modelName, bool inMemProfileReady, bool gzipReady)
         {
+            var result = string.Empty;
+            var compressTag = "[CompressResult]\r\n\t";
+
             if (!inMemProfileReady)
-                return ControllerTemplate.TemplateDefault.Replace("{0}", classNamespace).Replace("{1}", entityName);
+                result = ControllerTemplate.TemplateDefault.Replace("{0}", classNamespace).Replace("{1}", modelName);
             else
-                return ControllerTemplate.TemplateWithAccessControl.Replace("{0}", classNamespace).Replace("{1}", entityName);
+                result = ControllerTemplate.TemplateWithAccessControl.Replace("{0}", classNamespace).Replace("{1}", modelName);
+
+            result = result.Replace("{2}", gzipReady ? compressTag : string.Empty);
+
+            return result;
         }
 
         private string parseScript(Model modelPreConfig, string scriptContent)
@@ -231,6 +239,26 @@ namespace System.Data.Extraction
 
                 attrib.Required = !attrib.PrimaryKey;
             }
+        }
+
+        private string getValidationMsg(ValidationType validationType)
+        {
+            var result = string.Empty;
+
+            switch (validationType)
+            {
+                case ValidationType.Required:
+                    result =  Resources.ValidationMessage.RequiredAttribute;
+                    break;
+                case ValidationType.StringLength:
+                    result = Resources.ValidationMessage.StringLenExceeded;
+                    break;
+                case ValidationType.ForeignKey:
+                    result = Resources.ValidationMessage.RequiredRelation;
+                    break;
+            }
+
+            return result;
         }
 
         private void setEntityAnnotations(Model modelPreConfig)
@@ -300,22 +328,21 @@ namespace System.Data.Extraction
                 if (modelPreConfig.ValidationEnable)
                 {
                     if (attrib.Required)
-                    {
-                        if (!string.IsNullOrEmpty(modelPreConfig.DefaultRequiredMessage)
-                            && !string.IsNullOrEmpty(attrib.DisplayName))
+                        if (modelPreConfig.ValidationMsgEnable)
                         {
-                            var reqMsg = string.Format(modelPreConfig.DefaultRequiredMessage, attrib.DisplayName);
+                            var foreignKey = attrib.AttributeName.StartsWith("Id");
+                            var reqMsg = string.Format(getValidationMsg(!foreignKey ? ValidationType.Required : ValidationType.ForeignKey), 
+                                                                        !foreignKey ? attrib.AttributeName : 
+                                                                        getCompositionEntity(attrib.AttributeName, attrib.AttributeColumn).AttributeName);
                             annotationList.Add(string.Concat("[Required(\"ErrorMessage = \"", reqMsg, "\")]"));
                         }
                         else
                             annotationList.Add("[Required]");
-                    }
 
                     if (attrib.StringLength > 0)
-                        if (!string.IsNullOrEmpty(modelPreConfig.DefaultStringLengthMessage)
-                            && !string.IsNullOrEmpty(attrib.DisplayName))
+                        if (modelPreConfig.ValidationMsgEnable)
                         {
-                            var strLenMsg = string.Format(modelPreConfig.DefaultStringLengthMessage, attrib.DisplayName);
+                            var strLenMsg = string.Format(getValidationMsg(ValidationType.StringLength), attrib.AttributeName, attrib.StringLength);
                             annotationList.Add(string.Concat("[StringLength(", attrib.StringLength.ToString(), ", ErrorMessage = \"", strLenMsg, "\")]"));
                         }
                         else
@@ -326,7 +353,7 @@ namespace System.Data.Extraction
                 {
                     StringBuilder compositAnnot = new StringBuilder();
                     compositAnnot.AppendLine("[RelatedEntity(Cardinality = RelationCardinality.OneToOne,");
-                    compositAnnot.AppendLine(string.Concat("\t\t\t\t\t   ForeignKeyAttribute = \"", attrib.AttributeName, "\","));
+                    compositAnnot.AppendLine(string.Concat("\t\t\t\t\t   ForeignKeyAttribute = \"", getPascalCase(attrib.AttributeColumn), "\","));
                     compositAnnot.Append("\t\t\t\t\t   RecordableComposition = false)]"); 
                     annotationList.Add(compositAnnot.ToString());
                 }
@@ -339,7 +366,7 @@ namespace System.Data.Extraction
 
         #region Public Methods
 
-        public string[] ExtractModelClass(bool serializable, bool validationReady, bool ropSqlReady, bool wcfReady, bool jsonMinReady)
+        public string[] ExtractModelClass(bool serializable, bool validationReady, bool validationMsgReady, bool ropSqlReady, bool gzipReady, bool wcfReady, bool jsonMinReady)
         {
             string[] result = new string[2];
             List<string> defaultNamespaces = new List<string>();
@@ -348,8 +375,10 @@ namespace System.Data.Extraction
             Model modelPreConfig = new Model()
             {
                 Serializable = serializable,
-                ValidationEnable = validationReady,
+                ValidationEnable = validationReady || validationMsgReady,
+                ValidationMsgEnable = validationMsgReady,
                 RopSqlEnable = ropSqlReady,
+                GzipEnable = gzipReady,
                 WcfEnable = wcfReady,
                 JsonMinEnable = jsonMinReady,
 
@@ -362,9 +391,9 @@ namespace System.Data.Extraction
             return result;
         }
 
-        public string ExtractController(string modelName, bool inMemProfileReady)
+        public string ExtractController(string modelName, bool inMemProfileReady, bool gzipReady)
         {
-            return compositeController(modelName, inMemProfileReady);
+            return compositeController(modelName, inMemProfileReady, gzipReady);
         }
 
         #endregion
