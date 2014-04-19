@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 
 namespace System.Data.Extraction
 {
@@ -46,7 +47,9 @@ namespace System.Data.Extraction
                 if (controller || securController)
                     Console.WriteLine(string.Concat(Environment.NewLine, "Controller Class successfully extracted on ", controllerOutputFile));
 
-                Console.WriteLine();
+                Process.Start("Notepad.exe", modelOutputFile);
+                Process.Start("Notepad.exe", controllerOutputFile);
+
                 Console.Read();
             }
             else

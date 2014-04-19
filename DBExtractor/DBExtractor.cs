@@ -75,6 +75,12 @@ namespace System.Data.Extraction
                 result = "long";
             else if (scriptDataType.Contains("INT"))
                 result = "int";
+            else if (scriptDataType.Contains("FLOAT"))
+                result = "float";
+            else if (scriptDataType.Contains("DOUBLE"))
+                result = "double";
+            else if (scriptDataType.Contains("DECIMAL"))
+                result = "decimal";
             else if (scriptDataType.Contains("VARCHAR"))
                 result = "string";
             else if (scriptDataType.Contains("CHAR"))
@@ -334,7 +340,7 @@ namespace System.Data.Extraction
                             var reqMsg = string.Format(getValidationMsg(!foreignKey ? ValidationType.Required : ValidationType.ForeignKey), 
                                                                         !foreignKey ? attrib.AttributeName : 
                                                                         getCompositionEntity(attrib.AttributeName, attrib.AttributeColumn).AttributeName);
-                            annotationList.Add(string.Concat("[Required(\"ErrorMessage = \"", reqMsg, "\")]"));
+                            annotationList.Add(string.Concat("[Required(ErrorMessage = \"", reqMsg, "\")]"));
                         }
                         else
                             annotationList.Add("[Required]");
