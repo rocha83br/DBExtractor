@@ -196,7 +196,7 @@ namespace System.Data.Extraction
         private string compositeController(string modelName, bool inMemProfileReady, bool gzipReady)
         {
             var result = string.Empty;
-            var compressTag = "[CompressResult]\r\n\t";
+            var compressTag = "[CompressResult]\r\n    ";
 
             if (!inMemProfileReady)
                 result = ControllerTemplate.TemplateDefault.Replace("{0}", classNamespace).Replace("{1}", modelName);
@@ -359,8 +359,8 @@ namespace System.Data.Extraction
                 {
                     StringBuilder compositAnnot = new StringBuilder();
                     compositAnnot.AppendLine("[RelatedEntity(Cardinality = RelationCardinality.OneToOne,");
-                    compositAnnot.AppendLine(string.Concat("\t\t\t\t\t   ForeignKeyAttribute = \"", getPascalCase(attrib.AttributeColumn), "\","));
-                    compositAnnot.Append("\t\t\t\t\t   RecordableComposition = false)]"); 
+                    compositAnnot.AppendLine(string.Concat("\t\t\t\t\t     ForeignKeyAttribute = \"", getPascalCase(attrib.AttributeColumn), "\","));
+                    compositAnnot.Append("\t\t\t\t\t     RecordableComposition = false)]"); 
                     annotationList.Add(compositAnnot.ToString());
                 }
 
