@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading;
+using System.Configuration;
+using System.Globalization;
 using System.Diagnostics;
 
 namespace System.Data.Extraction
@@ -26,6 +29,10 @@ namespace System.Data.Extraction
                 var controller = args.Contains("-c");
                 var securController = args.Contains("-ca");
                 var gzip = args.Contains("-g");
+
+                CultureInfo culture = new CultureInfo(ConfigurationSettings.AppSettings["Culture"]);
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
 
                 var resultArray = new DBScriptExtractor(inputFile, classNamespace).ExtractModelClass(serialize, validate, valmsg, ropsql, gzip, wcf, json);
                 var resultModel = resultArray.First();
