@@ -27,7 +27,7 @@ namespace {0}
         public ViewResult Index()
         {
             var filterEntity = new {1}();
-            return View(persistAdapter.List(filterEntity, false));
+            return View(persistAdapter.List<{1}>(filterEntity, false));
         }
 
         public ActionResult Create()
@@ -50,7 +50,7 @@ namespace {0}
         public ActionResult Edit(int id)
         {
             var filterEntity = new {1}();
-            var returnEntity = persistAdapter.Get(filterEntity, false);
+            var returnEntity = persistAdapter.Get<{1}>(filterEntity, false);
                                                                         
             return View(returnEntity);
         }
@@ -72,7 +72,7 @@ namespace {0}
         public ActionResult Delete(int id)
         {
                 var filterEntity = new {1}() { Id = id };
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                var returnEntity = persistAdapter.Get<{1}>(filterEntity, false);
                                                                                     
                 return View(returnEntity);
         }
@@ -119,7 +119,7 @@ namespace {0}
                  && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
             {
                 var filterEntity = new {1}();
-                return View(persistAdapter.List(filterEntity, false));
+                return View(persistAdapter.List<{1}>(filterEntity, false));
             }
             else
             {
@@ -173,7 +173,7 @@ namespace {0}
                  && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
             {
                 var filterEntity = new {1}();
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                var returnEntity = persistAdapter.Get<{1}>(filterEntity, false);
                                                                         
                 return View(returnEntity);
             }
@@ -217,7 +217,7 @@ namespace {0}
                  && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
             {
                 var filterEntity = new {1}() { Id = id };
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                var returnEntity = persistAdapter.Get<{1}>(filterEntity, false);
                                                                                     
                 return View(returnEntity);
             }
