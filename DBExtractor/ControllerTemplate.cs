@@ -115,7 +115,8 @@ namespace {0}
         {
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-            if (AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
+            if ((currentUser != null) 
+                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
             {
                 var filterEntity = new {1}();
                 return View(persistAdapter.List(filterEntity, false));
@@ -131,7 +132,8 @@ namespace {0}
         {
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-            if (AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+            if ((currentUser != null) 
+                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
                 return View();
             else
             {
@@ -145,7 +147,8 @@ namespace {0}
         {
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-            if (AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+            if ((currentUser != null) 
+                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
             {
                 if (ModelState.IsValid)
                 {
@@ -166,7 +169,8 @@ namespace {0}
         {
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-            if (AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+            if ((currentUser != null) 
+                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
             {
                 var filterEntity = new {1}();
                 var returnEntity = persistAdapter.Get(filterEntity, false);
@@ -185,7 +189,8 @@ namespace {0}
         {
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-            if (AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+            if ((currentUser != null) 
+                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
             {
                 if (ModelState.IsValid)
                 {
@@ -208,7 +213,8 @@ namespace {0}
         {
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-            if (AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+            if ((currentUser != null) 
+                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
             {
                 var filterEntity = new {1}() { Id = id };
                 var returnEntity = persistAdapter.Get(filterEntity, false);
@@ -227,7 +233,8 @@ namespace {0}
         {    
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-            if (AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+            if ((currentUser != null) 
+                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
             {
                 var filterEntity = new {1}() { Id = id };
                 persistAdapter.Delete(filterEntity);
