@@ -61,7 +61,7 @@ namespace {0}
             if (ModelState.IsValid)
             {
                 var filterEntity = new {1}() { Id = editedEntity.Id };
-                persistAdapter.Edit(editedEntity, filterEntity);
+                persistAdapter.Edit(editedEntity, filterEntity, false);
 
                 return RedirectToAction(""Index"");
             }
@@ -81,14 +81,14 @@ namespace {0}
         public ActionResult DeleteConfirmed(int id)
         {    
             var filterEntity = new {1}() { Id = id };
-            persistAdapter.Delete(filterEntity, false);
+            persistAdapter.Delete(filterEntity);
                                                                                     
             return RedirectToAction(""Index"");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            persistAdapter = null;
             base.Dispose(disposing);
         }
     }
@@ -190,7 +190,7 @@ namespace {0}
                 if (ModelState.IsValid)
                 {
                     var filterEntity = new {1}() { Id = editedEntity.Id };
-                    persistAdapter.Edit(editedEntity, filterEntity);
+                    persistAdapter.Edit(editedEntity, filterEntity, false);
 
                     return RedirectToAction(""Index"");
                 }
@@ -230,7 +230,7 @@ namespace {0}
             if (AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
             {
                 var filterEntity = new {1}() { Id = id };
-                persistAdapter.Delete(filterEntity, false);
+                persistAdapter.Delete(filterEntity);
                                                                                     
                 return RedirectToAction(""Index"");
             }
@@ -243,7 +243,7 @@ namespace {0}
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            persistAdapter = null;
             base.Dispose(disposing);
         }
     }

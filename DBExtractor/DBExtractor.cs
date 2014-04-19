@@ -170,6 +170,9 @@ namespace System.Data.Extraction
             classBody.AppendLine(classNamespace);
             classBody.AppendLine("{");
 
+            foreach (var annot in modelPreConfig.Annotations)
+                classBody.AppendLine(string.Concat("\t", annot));
+
             classBody.Append("\tpublic class ");
             classBody.AppendLine(modelPreConfig.EntityName);
             classBody.AppendLine("\t{");
@@ -359,8 +362,8 @@ namespace System.Data.Extraction
                 {
                     StringBuilder compositAnnot = new StringBuilder();
                     compositAnnot.AppendLine("[RelatedEntity(Cardinality = RelationCardinality.OneToOne,");
-                    compositAnnot.AppendLine(string.Concat("\t\t\t\t\t     ForeignKeyAttribute = \"", getPascalCase(attrib.AttributeColumn), "\","));
-                    compositAnnot.Append("\t\t\t\t\t     RecordableComposition = false)]"); 
+                    compositAnnot.AppendLine(string.Concat("\t\t\t\t\t   ForeignKeyAttribute = \"", getPascalCase(attrib.AttributeColumn), "\","));
+                    compositAnnot.Append("\t\t\t\t\t   RecordableComposition = false)]"); 
                     annotationList.Add(compositAnnot.ToString());
                 }
 
