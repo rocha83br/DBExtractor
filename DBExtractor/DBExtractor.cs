@@ -246,7 +246,7 @@ namespace System.Data.Extraction
                 attrib.PrimaryKey = constraintRange.Contains(string.Concat("`", attrib.AttributeColumn, "`"))
                                  || constraintRange.Contains(string.Concat("[", attrib.AttributeColumn, "]"));
 
-                attrib.Required = !attrib.PrimaryKey;
+                if (attrib.PrimaryKey) attrib.Required = false;
             }
         }
 
