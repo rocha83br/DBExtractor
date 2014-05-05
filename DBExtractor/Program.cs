@@ -28,6 +28,8 @@ namespace System.Data.Extraction
 
                 var controller = args.Contains("-c");
                 var securController = args.Contains("-ca");
+                var loggedController = args.Contains("-cl");
+                var wkflowController = args.Contains("-cw");
                 var gzip = args.Contains("-g");
 
                 CultureInfo culture = new CultureInfo(ConfigurationSettings.AppSettings["Culture"]);
@@ -42,9 +44,9 @@ namespace System.Data.Extraction
                 writeFile(modelOutputFile, resultModel);
 
                 var controllerOutputFile = string.Empty;
-                if (controller || securController)
+                if (controller || securController || loggedController || wkflowController)
                 {
-                    var resultController = new DBScriptExtractor(classNamespace).ExtractController(modelName, securController, gzip);
+                    var resultController = new DBScriptExtractor(classNamespace).ExtractController(modelName, securController, loggedController, wkflowController, gzip);
                     controllerOutputFile = string.Concat(modelName, "Controller.cs");
                     writeFile(controllerOutputFile, resultController);
                 }
@@ -83,6 +85,11 @@ namespace System.Data.Extraction
             Console.WriteLine("-c  : Extract with RopSql based Controller");
             Console.WriteLine("-ca : Extract with RopSql based Controller");
             Console.WriteLine("      and InMemProfile Access Control");
+            Console.WriteLine("-cl : Extract with RopSql based Controller,");
+            Console.WriteLine("      InMemProfile Access Control and Registry Log");
+            Console.WriteLine("-cw : Extract with RopSql based Controller,");
+            Console.WriteLine("      InMemProfile Access Control, Registry Log");
+            Console.WriteLine("      and Custom Workflow Support");
             Console.WriteLine("-g  : Extract with GZip result enable");
             Console.Read();
         }

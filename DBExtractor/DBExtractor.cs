@@ -167,7 +167,8 @@ namespace System.Data.Extraction
 
             classBody.AppendLine();
             classBody.Append("namespace ");
-            classBody.AppendLine(classNamespace);
+            classBody.Append(classNamespace);
+            classBody.AppendLine(".Models");
             classBody.AppendLine("{");
 
             foreach (var annot in modelPreConfig.Annotations)
@@ -196,7 +197,7 @@ namespace System.Data.Extraction
             return classBody.ToString();
         }
 
-        private string compositeController(string modelName, bool inMemProfileReady, bool gzipReady)
+        private string compositeController(string modelName, bool inMemProfileReady, bool systemRegistry, bool customWorkflow, bool gzipReady)
         {
             var result = string.Empty;
             var compressTag = "[CompressResult]\r\n    ";
@@ -204,7 +205,12 @@ namespace System.Data.Extraction
             if (!inMemProfileReady)
                 result = ControllerTemplate.TemplateDefault.Replace("{0}", classNamespace).Replace("{1}", modelName);
             else
-                result = ControllerTemplate.TemplateWithAccessControl.Replace("{0}", classNamespace).Replace("{1}", modelName);
+            {
+                if (!systemRegistry)
+                    result = ControllerTemplate.TemplateWithAccessControl.Replace("{0}", classNamespace).Replace("{1}", modelName);
+                else
+                    result = ControllerTemplate.TemplateWithAC_AndRegistry.Replace("{0}", classNamespace).Replace("{1}", modelName);
+            }
 
             result = result.Replace("{2}", gzipReady ? compressTag : string.Empty);
 
@@ -400,9 +406,9 @@ namespace System.Data.Extraction
             return result;
         }
 
-        public string ExtractController(string modelName, bool inMemProfileReady, bool gzipReady)
+        public string ExtractController(string modelName, bool inMemProfileReady, bool systemRegistry, bool customWorkflow, bool gzipReady)
         {
-            return compositeController(modelName, inMemProfileReady, gzipReady);
+            return compositeController(modelName, inMemProfileReady, systemRegistry, customWorkflow, gzipReady);
         }
 
         #endregion
