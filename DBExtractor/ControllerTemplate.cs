@@ -188,7 +188,7 @@ namespace {0}.Controllers
             if ((currentUser != null) 
                  && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
             {
-                var filterEntity = new {1}();
+                var filterEntity = new {1}() { Id = id };
                 var returnEntity = persistAdapter.Get(filterEntity, false);
                                                                         
                 return View(returnEntity);

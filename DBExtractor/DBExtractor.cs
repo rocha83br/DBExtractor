@@ -87,6 +87,8 @@ namespace System.Data.Extraction
                 result = "char";
             else if (scriptDataType.Contains("BIT"))
                 result = "bool";
+            else if (scriptDataType.Contains("DATETIME"))
+                result = "DateTime";
 
             return result;
         }
