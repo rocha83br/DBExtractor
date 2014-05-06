@@ -42,6 +42,7 @@ namespace System.Data.Extraction
 
                 var modelOutputFile = string.Concat(modelName, ".cs");
                 writeFile(modelOutputFile, resultModel);
+                Console.WriteLine(string.Concat("Model Class successfully extracted on ", modelOutputFile));
 
                 var controllerOutputFile = string.Empty;
                 if (controller || securController || loggedController || wkflowController)
@@ -49,12 +50,8 @@ namespace System.Data.Extraction
                     var resultController = new DBScriptExtractor(classNamespace).ExtractController(modelName, securController, loggedController, wkflowController, gzip);
                     controllerOutputFile = string.Concat(modelName, "Controller.cs");
                     writeFile(controllerOutputFile, resultController);
-                }
-
-                Console.WriteLine(string.Concat("Model Class successfully extracted on ", modelOutputFile));
-
-                if (controller || securController)
                     Console.WriteLine(string.Concat(Environment.NewLine, "Controller Class successfully extracted on ", controllerOutputFile));
+                }
 
                 Process.Start("Notepad.exe", modelOutputFile);
                 Process.Start("Notepad.exe", controllerOutputFile);
@@ -72,7 +69,7 @@ namespace System.Data.Extraction
             Console.WriteLine();
             Console.WriteLine("Use :");
             Console.WriteLine("-----------------------------------------------------------");
-            Console.WriteLine("DBExtractor [inputfile] [modelname] parameters");
+            Console.WriteLine("DBExtractor [inputfile] [namespace] parameters");
             Console.WriteLine();
             Console.WriteLine("Parameters :");
             Console.WriteLine("-s  : Extract with serialization enable");

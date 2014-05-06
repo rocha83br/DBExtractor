@@ -204,14 +204,17 @@ namespace System.Data.Extraction
             var result = string.Empty;
             var compressTag = "[CompressResult]\r\n    ";
 
-            if (!inMemProfileReady)
+            if (!inMemProfileReady && !systemRegistry && !customWorkflow)
                 result = ControllerTemplate.TemplateDefault.Replace("{0}", classNamespace).Replace("{1}", modelName);
             else
             {
-                if (!systemRegistry)
+                if (inMemProfileReady && !systemRegistry && !customWorkflow)
                     result = ControllerTemplate.TemplateWithAccessControl.Replace("{0}", classNamespace).Replace("{1}", modelName);
                 else
-                    result = ControllerTemplate.TemplateWithAC_AndRegistry.Replace("{0}", classNamespace).Replace("{1}", modelName);
+                    if (!customWorkflow)
+                        result = ControllerTemplate.TemplateWithAC_AndRegistry.Replace("{0}", classNamespace).Replace("{1}", modelName);
+                    else
+                        result = ControllerTemplate.TemplateWithAC_Reg_AndWorkFlow.Replace("{0}", classNamespace).Replace("{1}", modelName);
             }
 
             result = result.Replace("{2}", gzipReady ? compressTag : string.Empty);
