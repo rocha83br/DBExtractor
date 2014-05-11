@@ -18,6 +18,7 @@ namespace System.Data.Extraction
             {
                 var inputFile = args.First();
                 var classNamespace = args[1];
+                var excepDepth = args[2];
 
                 var serialize = args.Contains("-s");
                 var validate = args.Contains("-v");
@@ -27,6 +28,7 @@ namespace System.Data.Extraction
                 var json = args.Contains("-j");
 
                 var controller = args.Contains("-c");
+                var excepSafeController = args.Contains("-ce");
                 var securController = args.Contains("-ca");
                 var loggedController = args.Contains("-cl");
                 var wkflowController = args.Contains("-cw");
@@ -45,9 +47,15 @@ namespace System.Data.Extraction
                 Console.WriteLine(string.Concat("Model Class successfully extracted on ", modelOutputFile));
 
                 var controllerOutputFile = string.Empty;
-                if (controller || securController || loggedController || wkflowController)
+                if (controller || excepSafeController || securController || loggedController || wkflowController)
                 {
-                    var resultController = new DBScriptExtractor(classNamespace).ExtractController(modelName, securController, loggedController, wkflowController, gzip);
+                    var exDepth = int.Parse(excepDepth);
+                    var resultController = new DBScriptExtractor(classNamespace).ExtractController(modelName, 
+                                                                                                   excepSafeController, 
+                                                                                                   securController, 
+                                                                                                   loggedController, 
+                                                                                                   wkflowController, 
+                                                                                                   gzip, exDepth);
                     controllerOutputFile = string.Concat(modelName, "Controller.cs");
                     writeFile(controllerOutputFile, resultController);
                     Console.WriteLine(string.Concat(Environment.NewLine, "Controller Class successfully extracted on ", controllerOutputFile));
@@ -65,11 +73,9 @@ namespace System.Data.Extraction
         static void printHelp()
         {
             Console.Clear();
-            Console.WriteLine("Invalid argument.");
-            Console.WriteLine();
             Console.WriteLine("Use :");
-            Console.WriteLine("-----------------------------------------------------------");
-            Console.WriteLine("DBExtractor [inputfile] [namespace] parameters");
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("DBExtractor [inputfile] [namespace] [exceptiondepth] parameters");
             Console.WriteLine();
             Console.WriteLine("Parameters :");
             Console.WriteLine("-s  : Extract with serialization enable");
@@ -80,12 +86,14 @@ namespace System.Data.Extraction
             Console.WriteLine("-j  : Extract with JSON minimification enable");
             Console.WriteLine();
             Console.WriteLine("-c  : Extract with RopSql based Controller");
+            Console.WriteLine("-ce : Extract with RopSql based Controller");
+            Console.WriteLine("      and Exception Manager");
             Console.WriteLine("-ca : Extract with RopSql based Controller");
-            Console.WriteLine("      and InMemProfile Access Control");
+            Console.WriteLine("      Exception Safe and InMemProfile Access Control");
             Console.WriteLine("-cl : Extract with RopSql based Controller,");
-            Console.WriteLine("      InMemProfile Access Control and Registry Log");
+            Console.WriteLine("      Exception Safe, Security and Registry Log");
             Console.WriteLine("-cw : Extract with RopSql based Controller,");
-            Console.WriteLine("      InMemProfile Access Control, Registry Log");
+            Console.WriteLine("      Exception Safe, Security, Registry Log");
             Console.WriteLine("      and Custom Workflow Support");
             Console.WriteLine("-g  : Extract with GZip result enable");
             Console.Read();

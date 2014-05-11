@@ -199,25 +199,29 @@ namespace System.Data.Extraction
             return classBody.ToString();
         }
 
-        private string compositeController(string modelName, bool inMemProfileReady, bool systemRegistry, bool customWorkflow, bool gzipReady)
+        private string compositeController(string modelName, bool exceptionManager, bool inMemProfileReady, bool systemRegistry, bool customWorkflow, bool gzipReady, int excepDepth)
         {
             var result = string.Empty;
             var compressTag = "[CompressResult]\r\n    ";
 
-            if (!inMemProfileReady && !systemRegistry && !customWorkflow)
+            if (!exceptionManager && !inMemProfileReady && !systemRegistry && !customWorkflow)
                 result = ControllerTemplate.TemplateDefault.Replace("{0}", classNamespace).Replace("{1}", modelName);
             else
             {
-                if (inMemProfileReady && !systemRegistry && !customWorkflow)
-                    result = ControllerTemplate.TemplateWithAccessControl.Replace("{0}", classNamespace).Replace("{1}", modelName);
+                if (exceptionManager && !inMemProfileReady && !systemRegistry && !customWorkflow)
+                    result = ControllerTemplate.TemplateWithExceptionManager.Replace("{0}", classNamespace).Replace("{1}", modelName);
                 else
-                    if (!customWorkflow)
-                        result = ControllerTemplate.TemplateWithAC_AndRegistry.Replace("{0}", classNamespace).Replace("{1}", modelName);
+                    if (inMemProfileReady && !systemRegistry && !customWorkflow)
+                        result = ControllerTemplate.TemplateWith_ExcepMan_AndAccessControl.Replace("{0}", classNamespace).Replace("{1}", modelName);
+                    else if (!customWorkflow)
+                        result = ControllerTemplate.TemplateWithExMn_AcCtl_AndRegistry.Replace("{0}", classNamespace).Replace("{1}", modelName);
                     else
-                        result = ControllerTemplate.TemplateWithAC_Reg_AndWorkFlow.Replace("{0}", classNamespace).Replace("{1}", modelName);
+                        result = ControllerTemplate.TemplateWithExMn_AcCt_Reg_AndWorkFlow.Replace("{0}", classNamespace).Replace("{1}", modelName);
             }
 
             result = result.Replace("{2}", gzipReady ? compressTag : string.Empty);
+
+            result = result.Replace("{3}", (excepDepth > 0) ? excepDepth.ToString() : string.Empty);
 
             return result;
         }
@@ -411,9 +415,9 @@ namespace System.Data.Extraction
             return result;
         }
 
-        public string ExtractController(string modelName, bool inMemProfileReady, bool systemRegistry, bool customWorkflow, bool gzipReady)
+        public string ExtractController(string modelName, bool exceptionManager, bool inMemProfileReady, bool systemRegistry, bool customWorkflow, bool gzipReady, int excepDepth)
         {
-            return compositeController(modelName, inMemProfileReady, systemRegistry, customWorkflow, gzipReady);
+            return compositeController(modelName, exceptionManager, inMemProfileReady, systemRegistry, customWorkflow, gzipReady, excepDepth);
         }
 
         #endregion

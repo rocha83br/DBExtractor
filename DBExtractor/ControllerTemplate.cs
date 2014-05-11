@@ -115,7 +115,7 @@ namespace {0}.Controllers
     }
 }";
 
-        public static string TemplateWithAccessControl = @"using System;
+        public static string TemplateWithExceptionManager = @"using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -135,157 +135,154 @@ namespace {0}.Controllers
         
         public ViewResult Index()
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            var filterEntity = new {1}();
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}();
+            try {
+
                 return View(persistAdapter.List<{1}>(filterEntity, false));
             }
-            else
+            catch(Exception ex)
             {
-                HttpContext.Response.Redirect(""AccessDenied"");
-                return null;
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex);
             }
         }
 
         public ActionResult Create()
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
-                return View();
-            else
-                return RedirectToAction(""AccessDenied"");
-        }
+            return View();
+        } 
 
         [HttpPost]
         public ActionResult Create({1} newEntity)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
+                try {
+            
                     persistAdapter.Create(newEntity, false);
                     return RedirectToAction(""Index"");
                 }
-
-                return View(newEntity);
+                catch(Exception ex)
+                {
+                    new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                    RedirectToAction(""Error"");
+                }
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+
+            return View(newEntity);
         }
 
         public ActionResult Edit(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            var filterEntity = new {1}();
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
+            try {
+
                 var returnEntity = persistAdapter.Get(filterEntity, false);
-                                                                        
-                return View(returnEntity);
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+                                                                        
+            return View(returnEntity);
         }
 
         [HttpPost]
         public ActionResult Edit({1} editedEntity)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var filterEntity = new {1}() { Id = editedEntity.Id };
+                var filterEntity = new {1}() { Id = editedEntity.Id };
+                
+                try {
+                    
                     persistAdapter.Edit(editedEntity, filterEntity, false);
-
-                    return RedirectToAction(""Index"");
                 }
+                catch(Exception ex)
+                {
+                    new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                    RedirectToAction(""Error"");
+                }
+
+                return RedirectToAction(""Index"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
 
             return View(editedEntity);
         }
 
         public ActionResult Delete(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
-            {
                 var filterEntity = new {1}() { Id = id };
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                
+                try {
+                    
+                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                }
+                catch(Exception ex)
+                {
+                    new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                    RedirectToAction(""Error"");
+                }
                                                                                     
                 return View(returnEntity);
-            }
-            else
-                return RedirectToAction(""AccessDenied"");
         }
 
         [HttpPost, ActionName(""Delete"")]
         public ActionResult DeleteConfirmed(int id)
         {    
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
+            var filterEntity = new {1}() { Id = id };
+            
+            try {
+                
                 persistAdapter.Delete(filterEntity);
-                                                                                    
-                return RedirectToAction(""Index"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+                                                                                    
+            return RedirectToAction(""Index"");
         }
 
         public ActionResult Enable(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
+            var filterEntity = new {1}() { Id = id };
+            
+            try {
+            
                 var updatedEntity = persistAdapter.Get(filterEntity, false);
                 updatedEntity.Active = true;
                 persistAdapter.Edit(updatedEntity, filterEntity, false);
-
-                return RedirectToAction(""Index"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+            
+            return RedirectToAction(""Index"");
         }
 
         public ActionResult Disable(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
+            var filterEntity = new {1}() { Id = id };
+            
+            try {
+                
                 var updatedEntity = persistAdapter.Get(filterEntity, false);
                 updatedEntity.Active = false;
                 persistAdapter.Edit(updatedEntity, filterEntity, false);
-
-                return RedirectToAction(""Index"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+            
+            return RedirectToAction(""Index"");
         }
 
         protected override void Dispose(bool disposing)
@@ -296,7 +293,269 @@ namespace {0}.Controllers
     }
 }";
 
-        public static string TemplateWithAC_AndRegistry = @"using System;
+        public static string TemplateWith_ExcepMan_AndAccessControl = @"using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Configuration;
+using System.Data.RopSql;
+using System.Security.InMemProfile;
+using {0}.Models;
+
+namespace {0}.Controllers
+{ 
+    {2}public class {1}Controller : Controller
+    {
+        private RopSqlDataAdapter persistAdapter = new RopSqlDataAdapter();
+        
+        public ViewResult Index()
+        {
+            try {
+
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}();
+                    return View(persistAdapter.List<{1}>(filterEntity, false));
+                }
+                else
+                {
+                    HttpContext.Response.Redirect(""AccessDenied"");
+                    return null;
+                }
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                HttpContext.Response.Redirect(""Error"");
+            }
+        }
+
+        public ActionResult Create()
+        {
+            try {
+
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+                    return View();
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Create({1} newEntity)
+        {
+            try {
+
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+                {
+                    if (ModelState.IsValid)
+                    {
+                        persistAdapter.Create(newEntity, false);
+                        return RedirectToAction(""Index"");
+                    }
+
+                    return View(newEntity);
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+        }
+
+        public ActionResult Edit(int id)
+        {
+            try {
+
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                                                                        
+                    return View(returnEntity);
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Edit({1} editedEntity)
+        {
+            try {
+
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    if (ModelState.IsValid)
+                    {
+                        var filterEntity = new {1}() { Id = editedEntity.Id };
+                        persistAdapter.Edit(editedEntity, filterEntity, false);
+
+                        return RedirectToAction(""Index"");
+                    }
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+
+            return View(editedEntity);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            try {
+
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                                                                                    
+                    return View(returnEntity);
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+        }
+
+        [HttpPost, ActionName(""Delete"")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            try {    
+
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    persistAdapter.Delete(filterEntity);
+                                                                                    
+                    return RedirectToAction(""Index"");
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+        }
+
+        public ActionResult Enable(int id)
+        {
+            try {
+
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    updatedEntity.Active = true;
+                    persistAdapter.Edit(updatedEntity, filterEntity, false);
+
+                    return RedirectToAction(""Index"");
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+        }
+
+        public ActionResult Disable(int id)
+        {
+            try {
+
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    updatedEntity.Active = false;
+                    persistAdapter.Edit(updatedEntity, filterEntity, false);
+
+                    return RedirectToAction(""Index"");
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            persistAdapter = null;
+            base.Dispose(disposing);
+        }
+    }
+}";
+
+        public static string TemplateWithExMn_AcCtl_AndRegistry = @"using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -317,163 +576,244 @@ namespace {0}.Controllers
         
         public ViewResult Index()
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}();
-                sysRegistry.RegisterRead(filterEntity);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-                return View(persistAdapter.List<{1}>(filterEntity, false));
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}();
+                    sysRegistry.RegisterRead(filterEntity);
+
+                    return View(persistAdapter.List<{1}>(filterEntity, false));
+                }
+                else
+                {
+                    HttpContext.Response.Redirect(""AccessDenied"");
+                    return null;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                HttpContext.Response.Redirect(""AccessDenied"");
-                return null;
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
             }
         }
 
         public ActionResult Create()
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
-                return View();
-            else
-                return RedirectToAction(""AccessDenied"");
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+                    return View();
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         [HttpPost]
         public ActionResult Create({1} newEntity)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
-            {
-                if (ModelState.IsValid)
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
                 {
-                    persistAdapter.Create(newEntity, false);
-                    sysRegistry.RegisterCreate(newEntity);
-                    return RedirectToAction(""Index"");
-                }
+                    if (ModelState.IsValid)
+                    {
+                        persistAdapter.Create(newEntity, false);
+                        sysRegistry.RegisterCreate(newEntity);
+                        return RedirectToAction(""Index"");
+                    }
 
-                return View(newEntity);
+                    return View(newEntity);
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         public ActionResult Edit(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}();
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}();
+                    var returnEntity = persistAdapter.Get(filterEntity, false);
                                                                         
-                return View(returnEntity);
+                    return View(returnEntity);
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         [HttpPost]
         public ActionResult Edit({1} editedEntity)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                if (ModelState.IsValid)
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
                 {
-                    var filterEntity = new {1}() { Id = editedEntity.Id };
-                    persistAdapter.Edit(editedEntity, filterEntity, false);
-                    sysRegistry.RegisterEdit(editedEntity);
+                    if (ModelState.IsValid)
+                    {
+                        var filterEntity = new {1}() { Id = editedEntity.Id };
+                        persistAdapter.Edit(editedEntity, filterEntity, false);
+                        sysRegistry.RegisterEdit(editedEntity);
 
-                    return RedirectToAction(""Index"");
+                        return RedirectToAction(""Index"");
+                    }
                 }
+                else
+                    return RedirectToAction(""AccessDenied"");
+        }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
 
             return View(editedEntity);
         }
 
         public ActionResult Delete(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var returnEntity = persistAdapter.Get(filterEntity, false);
                                                                                     
-                return View(returnEntity);
+                    return View(returnEntity);
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         [HttpPost, ActionName(""Delete"")]
         public ActionResult DeleteConfirmed(int id)
-        {    
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+        {
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
-                persistAdapter.Delete(filterEntity);
-                sysRegistry.RegisterDelete(filterEntity);
-                return RedirectToAction(""Index"");
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");                
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    persistAdapter.Delete(filterEntity);
+                    sysRegistry.RegisterDelete(filterEntity);
+                    return RedirectToAction(""Index"");
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         public ActionResult Enable(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
-                var updatedEntity = persistAdapter.Get(filterEntity, false);
-                updatedEntity.Active = true;
-                persistAdapter.Edit(updatedEntity, filterEntity, false);
-                sysRegistry.RegisterEdit(updatedEntity);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-                return RedirectToAction(""Index"");
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    updatedEntity.Active = true;
+                    persistAdapter.Edit(updatedEntity, filterEntity, false);
+                    sysRegistry.RegisterEdit(updatedEntity);
+
+                    return RedirectToAction(""Index"");
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         public ActionResult Disable(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
-                var updatedEntity = persistAdapter.Get(filterEntity, false);
-                updatedEntity.Active = false;
-                persistAdapter.Edit(updatedEntity, filterEntity, false);
-                sysRegistry.RegisterEdit(updatedEntity);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-                return RedirectToAction(""Index"");
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    updatedEntity.Active = false;
+                    persistAdapter.Edit(updatedEntity, filterEntity, false);
+                    sysRegistry.RegisterEdit(updatedEntity);
+
+                    return RedirectToAction(""Index"");
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -484,7 +824,7 @@ namespace {0}.Controllers
     }
 }";
 
-        public static string TemplateWithAC_Reg_AndWorkFlow = @"using System;
+        public static string TemplateWithExMn_AcCt_Reg_AndWorkFlow = @"using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -506,190 +846,271 @@ namespace {0}.Controllers
         
         public ViewResult Index()
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}();
-                sysRegistry.RegisterRead(filterEntity);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-                return View(persistAdapter.List<{1}>(filterEntity, false));
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}();
+                    sysRegistry.RegisterRead(filterEntity);
+
+                    return View(persistAdapter.List<{1}>(filterEntity, false));
+                }
+                else
+                {
+                    HttpContext.Response.Redirect(""AccessDenied"");
+                    return null;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                HttpContext.Response.Redirect(""AccessDenied"");
-                return null;
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
             }
         }
 
         public ActionResult Create()
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
-                return View();
-            else
-                return RedirectToAction(""AccessDenied"");
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+                    return View();
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         [HttpPost]
         public ActionResult Create({1} newEntity)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
-            {
-                if (ModelState.IsValid)
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
                 {
-                    persistAdapter.Create(newEntity, false);
-                    sysRegistry.RegisterCreate(newEntity);
+                    if (ModelState.IsValid)
+                    {
+                        persistAdapter.Create(newEntity, false);
+                        sysRegistry.RegisterCreate(newEntity);
 
-                    var workFlowItem = null;
-                    if (workFlow.CheckCondition(newEntity))
-                        workFlowItem = workFlow.PutInApproval(newEntity);
-                    sysRegistry.RegisterCreate(workFlowItem);
+                        var workFlowItem = null;
+                        if (workFlow.CheckCondition(newEntity))
+                            workFlowItem = workFlow.PutInApproval(newEntity);
+                        sysRegistry.RegisterCreate(workFlowItem);
 
-                    return RedirectToAction(""Index"");
+                        return RedirectToAction(""Index"");
+                    }
+
+                    return View(newEntity);
                 }
-
-                return View(newEntity);
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         public ActionResult Edit(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}();
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}();
+                    var returnEntity = persistAdapter.Get(filterEntity, false);
                                                                         
-                return View(returnEntity);
+                    return View(returnEntity);
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         [HttpPost]
         public ActionResult Edit({1} editedEntity)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                if (ModelState.IsValid)
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");            
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
                 {
-                    var filterEntity = new {1}() { Id = editedEntity.Id };
-                    persistAdapter.Edit(editedEntity, filterEntity, false);
-                    sysRegistry.RegisterEdit(editedEntity);
+                    if (ModelState.IsValid)
+                    {
+                        var filterEntity = new {1}() { Id = editedEntity.Id };
+                        persistAdapter.Edit(editedEntity, filterEntity, false);
+                        sysRegistry.RegisterEdit(editedEntity);
 
-                    var workFlowItem = null;
-                    if (workFlow.CheckCondition(editedEntity))
-                        workFlowItem = workFlow.PutInApproval(newEntity);
-                    sysRegistry.RegisterCreate(workFlowItem);
+                        var workFlowItem = null;
+                        if (workFlow.CheckCondition(editedEntity))
+                            workFlowItem = workFlow.PutInApproval(newEntity);
+                        sysRegistry.RegisterCreate(workFlowItem);
 
-                    return RedirectToAction(""Index"");
+                        return RedirectToAction(""Index"");
+                    }
                 }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
 
             return View(editedEntity);
         }
 
         public ActionResult Delete(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var returnEntity = persistAdapter.Get(filterEntity, false);
                                                                                     
-                return View(returnEntity);
+                    return View(returnEntity);
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         [HttpPost, ActionName(""Delete"")]
         public ActionResult DeleteConfirmed(int id)
-        {    
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+        {
+            try {
+    
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
-                persistAdapter.Delete(filterEntity);
-                sysRegistry.RegisterDelete(filterEntity);
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    persistAdapter.Delete(filterEntity);
+                    sysRegistry.RegisterDelete(filterEntity);
 
-                var workFlowItem = null;
-                if (workFlow.CheckCondition(filterEntity))
-                    workFlowItem = workFlow.PutInApproval(filterEntity);
-                sysRegistry.RegisterCreate(workFlowItem);
+                    var workFlowItem = null;
+                    if (workFlow.CheckCondition(filterEntity))
+                        workFlowItem = workFlow.PutInApproval(filterEntity);
+                    sysRegistry.RegisterCreate(workFlowItem);
 
-                return RedirectToAction(""Index"");
+                    return RedirectToAction(""Index"");
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         public ActionResult Enable(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
-                var updatedEntity = persistAdapter.Get(filterEntity, false);
-                updatedEntity.Active = true;
-                persistAdapter.Edit(updatedEntity, filterEntity, false);
-                sysRegistry.RegisterEdit(updatedEntity);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-                var workFlowItem = null;
-                if (workFlow.CheckCondition(updatedEntity))
-                    workFlowItem = workFlow.PutInApproval(updatedEntity);
-                sysRegistry.RegisterCreate(workFlowItem);
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    updatedEntity.Active = true;
+                    persistAdapter.Edit(updatedEntity, filterEntity, false);
+                    sysRegistry.RegisterEdit(updatedEntity);
 
-                return RedirectToAction(""Index"");
+                    var workFlowItem = null;
+                    if (workFlow.CheckCondition(updatedEntity))
+                        workFlowItem = workFlow.PutInApproval(updatedEntity);
+                    sysRegistry.RegisterCreate(workFlowItem);
+
+                    return RedirectToAction(""Index"");
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         public ActionResult Disable(int id)
         {
-            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
-            if ((currentUser != null) 
-                 && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
-            {
-                var filterEntity = new {1}() { Id = id };
-                var updatedEntity = persistAdapter.Get(filterEntity, false);
-                updatedEntity.Active = false;
-                persistAdapter.Edit(updatedEntity, filterEntity, false);
-                sysRegistry.RegisterEdit(updatedEntity);
+                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-                var workFlowItem = null;
-                if (workFlow.CheckCondition(updatedEntity))
-                    workFlowItem = workFlow.PutInApproval(updatedEntity);
-                sysRegistry.RegisterCreate(workFlowItem);
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    updatedEntity.Active = false;
+                    persistAdapter.Edit(updatedEntity, filterEntity, false);
+                    sysRegistry.RegisterEdit(updatedEntity);
 
-                return RedirectToAction(""Index"");
+                    var workFlowItem = null;
+                    if (workFlow.CheckCondition(updatedEntity))
+                        workFlowItem = workFlow.PutInApproval(updatedEntity);
+                    sysRegistry.RegisterCreate(workFlowItem);
+
+                    return RedirectToAction(""Index"");
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
             }
-            else
-                return RedirectToAction(""AccessDenied"");
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
         }
 
         protected override void Dispose(bool disposing)
