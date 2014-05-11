@@ -315,7 +315,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -341,7 +341,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -362,7 +362,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -390,7 +390,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -416,7 +416,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -446,7 +446,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -472,7 +472,7 @@ namespace {0}.Controllers
         {
             try {    
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -497,7 +497,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -524,7 +524,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -578,7 +578,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -606,7 +606,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -627,7 +627,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -656,7 +656,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -682,7 +682,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -713,7 +713,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -739,7 +739,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");                
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");                
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -764,7 +764,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -792,7 +792,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -848,7 +848,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -876,7 +876,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -897,7 +897,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -932,7 +932,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -958,7 +958,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");            
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");            
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -994,7 +994,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -1020,7 +1020,7 @@ namespace {0}.Controllers
         {
             try {
     
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -1051,7 +1051,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
@@ -1084,7 +1084,7 @@ namespace {0}.Controllers
         {
             try {
 
-                if (Session.Count() == 0) RedirectToAction(""SessionExpired"");
+                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 

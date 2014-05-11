@@ -130,6 +130,7 @@ namespace System.Data.Extraction
 
             attribList = attribList.Replace("NULL,", "NULL|");
             attribList = attribList.Replace("AUTO_INCREMENT,", "AUTO_INCREMENT|");
+            attribList = attribList.Replace("b'1',", "b'1'|");
             attribList = attribList.Replace("\r\n", string.Empty);
 
             var attribArray = attribList.Substring(0, attribList.LastIndexOf('|')).Split('|');

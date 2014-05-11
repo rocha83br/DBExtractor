@@ -87,7 +87,8 @@ namespace System.Data.Extraction
             Console.WriteLine();
             Console.WriteLine("-c  : Extract with RopSql based Controller");
             Console.WriteLine("-ce : Extract with RopSql based Controller");
-            Console.WriteLine("      and Exception Manager (Depths : 1 Show, 2 Store, 3 Mail, 4 Ticket)");
+            Console.WriteLine("      and Exception Manager"); 
+            Console.WriteLine("      (Depths : 1 Show, 2 Store, 4 Mail, 8 Ticket)");
             Console.WriteLine("-ca : Extract with RopSql based Controller");
             Console.WriteLine("      Exception Safe and InMemProfile Access Control");
             Console.WriteLine("-cl : Extract with RopSql based Controller,");
