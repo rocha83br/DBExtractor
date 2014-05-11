@@ -90,7 +90,7 @@ namespace {0}.Controllers
         public ActionResult Enable(int id)
         {
             var filterEntity = new {1}() { Id = id };
-            var updatedEntity = persistAdapter.Get(filterEntity, false);
+            var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
             updatedEntity.Active = true;
             persistAdapter.Edit(updatedEntity, filterEntity, false);
 
@@ -100,7 +100,7 @@ namespace {0}.Controllers
         public ActionResult Disable(int id)
         {
             var filterEntity = new {1}() { Id = id };
-            var updatedEntity = persistAdapter.Get(filterEntity, false);
+            var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
             updatedEntity.Active = false;
             persistAdapter.Edit(updatedEntity, filterEntity, false);
 
@@ -253,7 +253,7 @@ namespace {0}.Controllers
             
             try {
             
-                var updatedEntity = persistAdapter.Get(filterEntity, false);
+                var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
                 updatedEntity.Active = true;
                 persistAdapter.Edit(updatedEntity, filterEntity, false);
             }
@@ -272,7 +272,7 @@ namespace {0}.Controllers
             
             try {
                 
-                var updatedEntity = persistAdapter.Get(filterEntity, false);
+                var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
                 updatedEntity.Active = false;
                 persistAdapter.Edit(updatedEntity, filterEntity, false);
             }
@@ -504,7 +504,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
                     updatedEntity.Active = true;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
 
@@ -531,7 +531,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
                     updatedEntity.Active = false;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
 
@@ -771,7 +771,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
                     updatedEntity.Active = true;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
                     sysRegistry.RegisterEdit(updatedEntity);
@@ -799,7 +799,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
                     updatedEntity.Active = false;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
                     sysRegistry.RegisterEdit(updatedEntity);
@@ -1058,7 +1058,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
                     updatedEntity.Active = true;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
                     sysRegistry.RegisterEdit(updatedEntity);
@@ -1091,7 +1091,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false);
+                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
                     updatedEntity.Active = false;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
                     sysRegistry.RegisterEdit(updatedEntity);
