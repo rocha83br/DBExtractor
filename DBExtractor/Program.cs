@@ -49,7 +49,7 @@ namespace System.Data.Extraction
                 var controllerOutputFile = string.Empty;
                 if (controller || excepSafeController || securController || loggedController || wkflowController)
                 {
-                    var exDepth = int.Parse(excepDepth);
+                    var exDepth = !string.IsNullOrEmpty(excepDepth) ? int.Parse(excepDepth) : 0;
                     var resultController = new DBScriptExtractor(classNamespace).ExtractController(modelName, 
                                                                                                    excepSafeController, 
                                                                                                    securController, 
@@ -87,7 +87,7 @@ namespace System.Data.Extraction
             Console.WriteLine();
             Console.WriteLine("-c  : Extract with RopSql based Controller");
             Console.WriteLine("-ce : Extract with RopSql based Controller");
-            Console.WriteLine("      and Exception Manager");
+            Console.WriteLine("      and Exception Manager (Depths : 1 Show, 2 Store, 3 Mail, 4 Ticket)");
             Console.WriteLine("-ca : Extract with RopSql based Controller");
             Console.WriteLine("      Exception Safe and InMemProfile Access Control");
             Console.WriteLine("-cl : Extract with RopSql based Controller,");
