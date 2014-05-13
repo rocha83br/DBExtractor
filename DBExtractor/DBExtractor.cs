@@ -333,8 +333,7 @@ namespace System.Data.Extraction
                 if (modelPreConfig.WcfEnable)
                     annotationList.Add("[DataMember]");
 
-                if (!string.IsNullOrEmpty(attrib.DisplayName))
-                    annotationList.Add(string.Concat("[DisplayName(\"", attrib.DisplayName, "\")]"));
+                annotationList.Add(string.Concat("[DisplayName(\"", attrib.AttributeName, "\")]"));
 
                 if (modelPreConfig.RopSqlEnable && !attrib.Composition)
                 {
