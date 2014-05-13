@@ -82,7 +82,7 @@ namespace {0}.Controllers
         public ActionResult DeleteConfirmed(int id)
         {    
             var filterEntity = new {1}() { Id = id };
-            persistAdapter.Delete(filterEntity);
+            persistAdapter.Delete(filterEntity.Id);
                                                                                     
             return RedirectToAction(""Index"");
         }
@@ -236,7 +236,7 @@ namespace {0}.Controllers
             
             try {
                 
-                persistAdapter.Delete(filterEntity);
+                persistAdapter.Delete(filterEntity.Id);
             }
             catch(Exception ex)
             {
@@ -482,7 +482,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    persistAdapter.Delete(filterEntity);
+                    persistAdapter.Delete(filterEntity.Id);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -585,7 +585,7 @@ namespace {0}.Controllers
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-            object filterEntity = new {1}();
+            {1} filterEntity = new {1}();
 
             try {
 
@@ -703,8 +703,9 @@ namespace {0}.Controllers
                     if (ModelState.IsValid)
                     {
                         var filterEntity = new {1}() { Id = editedEntity.Id };
+                        var originalEntity = persistAdapter.Get(filterEntity, false);
                         persistAdapter.Edit(editedEntity, filterEntity, false);
-                        sysRegistry.RegisterEdit(editedEntity);
+                        sysRegistry.RegisterEdit(originalEntity, editedEntity);
                         return RedirectToAction(""Index"");
                     }
                 }
@@ -759,8 +760,8 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    persistAdapter.Delete(filterEntity);
-                    sysRegistry.RegisterDelete(filterEntity);
+                    persistAdapter.Delete(filterEntity.Id);
+                    sysRegistry.RegisterDelete(filterEntity.Id);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -786,10 +787,11 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
+                    var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                    var updatedEntity = originalEntity;
                     updatedEntity.Active = true;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
-                    sysRegistry.RegisterEdit(updatedEntity);
+                    sysRegistry.RegisterEdit(originalEntity, updatedEntity);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -815,10 +817,11 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
+                    var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                    var updatedEntity = originalEntity;
                     updatedEntity.Active = false;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
-                    sysRegistry.RegisterEdit(updatedEntity);
+                    sysRegistry.RegisterEdit(originalEntity, updatedEntity);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -988,8 +991,9 @@ namespace {0}.Controllers
                     if (ModelState.IsValid)
                     {
                         var filterEntity = new {1}() { Id = editedEntity.Id };
+                        var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
                         persistAdapter.Edit(editedEntity, filterEntity, false);
-                        sysRegistry.RegisterEdit(editedEntity);
+                        sysRegistry.RegisterEdit(originalEntity, editedEntity);
 
                         var workFlowItem = null;
                         if (workFlow.CheckCondition(editedEntity))
@@ -1050,8 +1054,8 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    persistAdapter.Delete(filterEntity);
-                    sysRegistry.RegisterDelete(filterEntity);
+                    persistAdapter.Delete(filterEntity.Id);
+                    sysRegistry.RegisterDelete(filterEntity.Id);
 
                     var workFlowItem = null;
                     if (workFlow.CheckCondition(filterEntity))
@@ -1082,10 +1086,11 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
+                    var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                    var updatedEntity = originalEntity;
                     updatedEntity.Active = true;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
-                    sysRegistry.RegisterEdit(updatedEntity);
+                    sysRegistry.RegisterEdit(originalEntity, updatedEntity);
 
                     var workFlowItem = null;
                     if (workFlow.CheckCondition(updatedEntity))
@@ -1116,10 +1121,11 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
+                    var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                    var updatedEntity = originalEntity;
                     updatedEntity.Active = false;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
-                    sysRegistry.RegisterEdit(updatedEntity);
+                    sysRegistry.RegisterEdit(originalEntity, updatedEntity);
 
                     var workFlowItem = null;
                     if (workFlow.CheckCondition(updatedEntity))
