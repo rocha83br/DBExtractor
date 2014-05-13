@@ -51,7 +51,7 @@ namespace {0}.Controllers
         public ActionResult Edit(int id)
         {
             var filterEntity = new {1}();
-            var returnEntity = persistAdapter.Get(filterEntity, false);
+            var returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                                                                         
             return View(returnEntity);
         }
@@ -73,7 +73,7 @@ namespace {0}.Controllers
         public ActionResult Delete(int id)
         {
                 var filterEntity = new {1}() { Id = id };
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                var returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                                                                                     
                 return View(returnEntity);
         }
@@ -178,7 +178,7 @@ namespace {0}.Controllers
 
             try {
 
-                var returnEntity = persistAdapter.Get(filterEntity, false);
+                var returnEntity = persistAdapter.Get(filterEntity, false) as {1};
             }
             catch(Exception ex)
             {
@@ -218,7 +218,7 @@ namespace {0}.Controllers
                 
                 try {
                     
-                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                    var returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                 }
                 catch(Exception ex)
                 {
@@ -390,7 +390,7 @@ namespace {0}.Controllers
 
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-            object returnEntity = null;
+            {1} returnEntity = null;
 
             try {
 
@@ -398,7 +398,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -447,7 +447,7 @@ namespace {0}.Controllers
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-            object returnEntity = null;
+            {1} returnEntity = null;
 
             try {
 
@@ -455,7 +455,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -591,7 +591,7 @@ namespace {0}.Controllers
 
                 if ((currentUser != null) 
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile))
-                    sysRegistry.RegisterRead(filterEntity);
+                    sysRegistry.RegisterRead(filterEntity.Id);
                 else
                 {
                     HttpContext.Response.Redirect(""AccessDenied"");
@@ -643,7 +643,7 @@ namespace {0}.Controllers
                     if (ModelState.IsValid)
                     {
                         persistAdapter.Create(newEntity, false);
-                        sysRegistry.RegisterCreate(newEntity);
+                        sysRegistry.RegisterCreate(newEntity.Id);
                     }
 
                     return View(newEntity);
@@ -666,14 +666,15 @@ namespace {0}.Controllers
 
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-            object returnEntity = null;
+            {1} returnEntity = null;
+
             try {
 
                 if ((currentUser != null) 
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}();
-                    returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -723,7 +724,7 @@ namespace {0}.Controllers
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-            object returnEntity = null;
+            {1} returnEntity = null;
 
             try {
 
@@ -731,7 +732,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -776,10 +777,10 @@ namespace {0}.Controllers
 
         public ActionResult Enable(int id)
         {
-            try {
+            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
-                if (Session.Count == 0) RedirectToAction(""SessionExpired"");
-                var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            try {
 
                 if ((currentUser != null) 
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
@@ -870,7 +871,7 @@ namespace {0}.Controllers
 
                 if ((currentUser != null) 
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile))
-                    sysRegistry.RegisterRead(filterEntity);
+                    sysRegistry.RegisterRead(filterEntity.Id);
                 else
                 {
                     HttpContext.Response.Redirect(""AccessDenied"");
@@ -923,7 +924,7 @@ namespace {0}.Controllers
                     if (ModelState.IsValid)
                     {
                         persistAdapter.Create(newEntity, false);
-                        sysRegistry.RegisterCreate(newEntity);
+                        sysRegistry.RegisterCreate(newEntity.Id);
 
                         var workFlowItem = null;
                         if (workFlow.CheckCondition(newEntity))
@@ -950,7 +951,7 @@ namespace {0}.Controllers
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-            object returnEntity = null;
+            {1} returnEntity = null;
 
             try {
 
@@ -958,7 +959,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}();
-                    returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -1014,7 +1015,7 @@ namespace {0}.Controllers
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-            object returnEntity = null;
+            {1} returnEntity = null;
 
             try {
 
@@ -1022,7 +1023,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
