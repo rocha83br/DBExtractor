@@ -143,7 +143,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex);
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex);
             }
         }
 
@@ -164,7 +164,7 @@ namespace {0}.Controllers
                 }
                 catch(Exception ex)
                 {
-                    new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                    new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                     RedirectToAction(""Error"");
                 }
             }
@@ -182,7 +182,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
                                                                         
@@ -202,7 +202,7 @@ namespace {0}.Controllers
                 }
                 catch(Exception ex)
                 {
-                    new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                    new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                     RedirectToAction(""Error"");
                 }
 
@@ -222,7 +222,7 @@ namespace {0}.Controllers
                 }
                 catch(Exception ex)
                 {
-                    new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                    new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                     RedirectToAction(""Error"");
                 }
                                                                                     
@@ -240,7 +240,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
                                                                                     
@@ -259,7 +259,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
             
@@ -278,7 +278,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
             
@@ -315,13 +315,12 @@ namespace {0}.Controllers
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            var filterEntity = new {1}();
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
-                    var filterEntity = new {1}();
-                else
+                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile))
                 {
                     HttpContext.Response.Redirect(""AccessDenied"");
                     return null;
@@ -329,7 +328,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 HttpContext.Response.Redirect(""Error"");
             }
 
@@ -344,12 +343,12 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -365,7 +364,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
                 {
                     if (ModelState.IsValid)
                     {
@@ -378,7 +377,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -391,21 +390,22 @@ namespace {0}.Controllers
 
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            object returnEntity = null;
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -416,14 +416,13 @@ namespace {0}.Controllers
         [HttpPost]
         public ActionResult Edit({1} editedEntity)
         {
-
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     if (ModelState.IsValid)
                     {
@@ -437,7 +436,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -446,24 +445,24 @@ namespace {0}.Controllers
 
         public ActionResult Delete(int id)
         {
-
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            object returnEntity = null;
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -474,14 +473,13 @@ namespace {0}.Controllers
         [HttpPost, ActionName(""Delete"")]
         public ActionResult DeleteConfirmed(int id)
         {
-
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {    
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
                     persistAdapter.Delete(filterEntity);
@@ -491,7 +489,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -508,7 +506,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -520,7 +518,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -536,7 +534,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -548,7 +546,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -581,21 +579,19 @@ namespace {0}.Controllers
     {2}public class {1}Controller : Controller
     {
         private RopSqlDataAdapter persistAdapter = new RopSqlDataAdapter();
-        private SystemRegistry sysRegistry = new SystemRegistry();
+        private SystemRegistryHelper sysRegistry = new SystemRegistryHelper();
         
         public ViewResult Index()
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            object filterEntity = new {1}();
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
-                {
-                    var filterEntity = new {1}();
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile))
                     sysRegistry.RegisterRead(filterEntity);
-                }
                 else
                 {
                     HttpContext.Response.Redirect(""AccessDenied"");
@@ -604,7 +600,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -620,12 +616,12 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
                 return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -642,7 +638,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
                 {
                     if (ModelState.IsValid)
                     {
@@ -657,7 +653,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -670,21 +666,21 @@ namespace {0}.Controllers
 
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
-
+            object returnEntity = null;
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}();
-                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -701,7 +697,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     if (ModelState.IsValid)
                     {
@@ -716,7 +712,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -727,21 +723,22 @@ namespace {0}.Controllers
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            object returnEntity = null;
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -752,14 +749,13 @@ namespace {0}.Controllers
         [HttpPost, ActionName(""Delete"")]
         public ActionResult DeleteConfirmed(int id)
         {
-
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");                
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
                 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
                     persistAdapter.Delete(filterEntity);
@@ -770,7 +766,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -786,7 +782,7 @@ namespace {0}.Controllers
                 var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -799,7 +795,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -809,14 +805,13 @@ namespace {0}.Controllers
 
         public ActionResult Disable(int id)
         {
-
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -829,7 +824,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -862,23 +857,20 @@ namespace {0}.Controllers
     {2}public class {1}Controller : Controller
     {
         private RopSqlDataAdapter persistAdapter = new RopSqlDataAdapter();
-        private SystemRegistry sysRegistry = new SystemRegistry() { EntityHash = EntityHashRelation.{1} };
+        private SystemRegistryHelper sysRegistry = new SystemRegistryHelper() { EntityHash = EntityHashRelation.{1} };
         private WorkFlow workFlow = new WorkFlow() { EntityHash = EntityHashRelation.{1} };
         
         public ViewResult Index()
         {
-
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            var filterEntity = new {1}();
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.Profilekey))
-                {
-                    var filterEntity = new {1}();
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile))
                     sysRegistry.RegisterRead(filterEntity);
-                }
                 else
                 {
                     HttpContext.Response.Redirect(""AccessDenied"");
@@ -887,7 +879,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -904,12 +896,12 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey)) 
+                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile)) 
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -926,7 +918,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
                 {
                     if (ModelState.IsValid)
                     {
@@ -946,7 +938,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -958,21 +950,22 @@ namespace {0}.Controllers
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            object returnEntity = null;
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}();
-                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -989,7 +982,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     if (ModelState.IsValid)
                     {
@@ -1010,7 +1003,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -1021,21 +1014,22 @@ namespace {0}.Controllers
         {
             if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            object returnEntity = null;
 
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    var returnEntity = persistAdapter.Get(filterEntity, false);
+                    returnEntity = persistAdapter.Get(filterEntity, false);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -1052,7 +1046,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
                     persistAdapter.Delete(filterEntity);
@@ -1068,7 +1062,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -1084,7 +1078,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1102,7 +1096,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
@@ -1118,7 +1112,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.Profilekey))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1136,7 +1130,7 @@ namespace {0}.Controllers
             }
             catch(Exception ex)
             {
-                new ExceptionManager().RegisterException(user, EntityHashRelation.{1}, ex, {3});
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
                 RedirectToAction(""Error"");
             }
 
