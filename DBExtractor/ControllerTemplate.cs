@@ -313,7 +313,12 @@ namespace {0}.Controllers
         
         public ViewResult Index()
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                HttpContext.Response.Redirect(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
             var filterEntity = new {1}();
 
@@ -337,7 +342,12 @@ namespace {0}.Controllers
 
         public ActionResult Create()
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -388,7 +398,12 @@ namespace {0}.Controllers
         public ActionResult Edit(int id)
         {
 
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
             {1} returnEntity = null;
 
@@ -416,7 +431,12 @@ namespace {0}.Controllers
         [HttpPost]
         public ActionResult Edit({1} editedEntity)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -445,7 +465,12 @@ namespace {0}.Controllers
 
         public ActionResult Delete(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
             {1} returnEntity = null;
 
@@ -473,7 +498,12 @@ namespace {0}.Controllers
         [HttpPost, ActionName(""Delete"")]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {    
@@ -482,7 +512,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    persistAdapter.Delete(filterEntity.Id);
+                    persistAdapter.Delete(filterEntity);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -499,8 +529,12 @@ namespace {0}.Controllers
 
         public ActionResult Enable(int id)
         {
-            
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -528,7 +562,12 @@ namespace {0}.Controllers
 
         public ActionResult Disable(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -583,7 +622,12 @@ namespace {0}.Controllers
         
         public ViewResult Index()
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                HttpContext.Response.Redirect(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
             {1} filterEntity = new {1}();
 
@@ -610,7 +654,12 @@ namespace {0}.Controllers
 
         public ActionResult Create()
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -632,7 +681,12 @@ namespace {0}.Controllers
         [HttpPost]
         public ActionResult Create({1} newEntity)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -663,8 +717,12 @@ namespace {0}.Controllers
 
         public ActionResult Edit(int id)
         {
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
 
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
             {1} returnEntity = null;
 
@@ -692,7 +750,12 @@ namespace {0}.Controllers
         [HttpPost]
         public ActionResult Edit({1} editedEntity)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -723,7 +786,12 @@ namespace {0}.Controllers
 
         public ActionResult Delete(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
             {1} returnEntity = null;
 
@@ -751,7 +819,12 @@ namespace {0}.Controllers
         [HttpPost, ActionName(""Delete"")]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");                
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -760,7 +833,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    persistAdapter.Delete(filterEntity.Id);
+                    persistAdapter.Delete(filterEntity);
                     sysRegistry.RegisterDelete(filterEntity.Id);
                 }
                 else
@@ -778,7 +851,12 @@ namespace {0}.Controllers
 
         public ActionResult Enable(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -808,7 +886,12 @@ namespace {0}.Controllers
 
         public ActionResult Disable(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -866,7 +949,12 @@ namespace {0}.Controllers
         
         public ViewResult Index()
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                HttpContext.Response.Redirect(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
             var filterEntity = new {1}();
 
@@ -893,8 +981,12 @@ namespace {0}.Controllers
 
         public ActionResult Create()
         {
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
 
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -916,7 +1008,12 @@ namespace {0}.Controllers
         [HttpPost]
         public ActionResult Create({1} newEntity)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -952,7 +1049,12 @@ namespace {0}.Controllers
 
         public ActionResult Edit(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
             {1} returnEntity = null;
 
@@ -980,7 +1082,12 @@ namespace {0}.Controllers
         [HttpPost]
         public ActionResult Edit({1} editedEntity)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");            
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -1017,7 +1124,12 @@ namespace {0}.Controllers
 
         public ActionResult Delete(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
             {1} returnEntity = null;
 
@@ -1045,7 +1157,12 @@ namespace {0}.Controllers
         [HttpPost, ActionName(""Delete"")]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -1054,7 +1171,7 @@ namespace {0}.Controllers
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
                 {
                     var filterEntity = new {1}() { Id = id };
-                    persistAdapter.Delete(filterEntity.Id);
+                    persistAdapter.Delete(filterEntity);
                     sysRegistry.RegisterDelete(filterEntity.Id);
 
                     var workFlowItem = null;
@@ -1077,7 +1194,12 @@ namespace {0}.Controllers
 
         public ActionResult Enable(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
@@ -1112,7 +1234,12 @@ namespace {0}.Controllers
 
         public ActionResult Disable(int id)
         {
-            if (Session.Count == 0) RedirectToAction(""SessionExpired"");
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
