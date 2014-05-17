@@ -698,9 +698,8 @@ namespace {0}.Controllers
                     {
                         persistAdapter.Create(newEntity, false);
                         sysRegistry.RegisterCreate(newEntity.Id);
+                        return RedirectToAction(""Index"");
                     }
-
-                    return View(newEntity);
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -711,7 +710,7 @@ namespace {0}.Controllers
                 RedirectToAction(""Error"");
             }
 
-            return RedirectToAction(""Index"");
+            return View(newEntity);
 
         }
 
