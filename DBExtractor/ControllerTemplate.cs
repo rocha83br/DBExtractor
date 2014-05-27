@@ -90,6 +90,15 @@ namespace {0}.Controllers
         public ActionResult Enable(int id)
         {
             var filterEntity = new {1}() { Id = id };
+            var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+
+            return View(originalEntity);
+        }
+
+        [HttpPost, ActionName(""Enable"")]
+        public ActionResult EnableConfirmed(int id)
+        {
+            var filterEntity = new {1}() { Id = id };
             var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
             updatedEntity.Active = true;
             persistAdapter.Edit(updatedEntity, filterEntity, false);
@@ -98,6 +107,15 @@ namespace {0}.Controllers
         }
 
         public ActionResult Disable(int id)
+        {
+            var filterEntity = new {1}() { Id = id };
+            var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+            
+            return View(originalEntity);
+        }
+
+        [HttpPost, ActionName(""Disable"")]
+        public ActionResult DisableConfirmed(int id)
         {
             var filterEntity = new {1}() { Id = id };
             var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -250,6 +268,25 @@ namespace {0}.Controllers
         public ActionResult Enable(int id)
         {
             var filterEntity = new {1}() { Id = id };
+            {1} originalEntity = null;
+            
+            try {
+            
+                originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+            
+            return View(originalEntity);
+        }
+
+        [HttpPost, ActionName(""Enable"")]
+        public ActionResult EnableConfirmed(int id)
+        {
+            var filterEntity = new {1}() { Id = id };
             
             try {
             
@@ -267,6 +304,25 @@ namespace {0}.Controllers
         }
 
         public ActionResult Disable(int id)
+        {
+            var filterEntity = new {1}() { Id = id };
+            {1} originalEntity = null;            
+
+            try {
+                
+                originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+            
+            return View(originalEntity);
+        }
+
+        [HttpPost, ActionName(""Disable"")]
+        public ActionResult DisableConfirmed(int id)
         {
             var filterEntity = new {1}() { Id = id };
             
@@ -536,6 +592,39 @@ namespace {0}.Controllers
             }
 
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            {1} originalEntity = null;
+
+            try {
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+
+            return View(originalEntity);
+
+        }
+
+        [HttpPost, ActionName(""Enable"")]
+        public ActionResult EnableConfirmed(int id)
+        {
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
+            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
 
@@ -561,6 +650,39 @@ namespace {0}.Controllers
         }
 
         public ActionResult Disable(int id)
+        {
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
+            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            {1} originalEntity = null;
+
+            try {
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+
+            return View(originalEntity);
+
+        }
+
+        [HttpPost, ActionName(""DisableConfirmed"")]
+        public ActionResult DisableConfirmed(int id)
         {
             if (Session.Count == 0) 
             {
@@ -857,6 +979,39 @@ namespace {0}.Controllers
             }
 
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            {1} originalEntity = null;
+
+            try {
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+
+            return View(originalEntity);
+
+        }
+
+        [HttpPost, ActionName(""Enable"")]
+        public ActionResult EnableConfirmed(int id)
+        {
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
+            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
 
@@ -884,6 +1039,39 @@ namespace {0}.Controllers
         }
 
         public ActionResult Disable(int id)
+        {
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
+            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            {1} originalEntity = null;
+
+            try {
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+
+            return RedirectToAction(""Index"");
+
+        }
+
+        [HttpPost, ActionName(""Disable"")]
+        public ActionResult DisableConfirmed(int id)
         {
             if (Session.Count == 0) 
             {
@@ -1200,6 +1388,39 @@ namespace {0}.Controllers
             }
 
             var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            {1} originalEntity = null;
+
+            try {
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+
+            return View(originalEntity);
+
+        }
+
+        [HttpPost, ActionName(""Enable"")]
+        public ActionResult EnableConfirmed(int id)
+        {
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
+            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
 
             try {
 
@@ -1232,6 +1453,39 @@ namespace {0}.Controllers
         }
 
         public ActionResult Disable(int id)
+        {
+            if (Session.Count == 0) 
+            {
+                RedirectToAction(""SessionExpired"");
+                return null;
+            }
+
+            var currentUser = Session[EntityHashRelation.User.ToString()] as User;
+            {1} originalEntity = null;
+
+            try {
+
+                if ((currentUser != null) 
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                {
+                    var filterEntity = new {1}() { Id = id };
+                    originalEntity = persistAdapter.Get(filterEntity, false) as {1};
+                }
+                else
+                    return RedirectToAction(""AccessDenied"");
+            }
+            catch(Exception ex)
+            {
+                new ExceptionManager().RegisterException(currentUser, EntityHashRelation.{1}, ex, {3});
+                RedirectToAction(""Error"");
+            }
+
+            return View(originalEntity);
+
+        }
+
+        [HttpPost, ActionName(""Disable"")]
+        public ActionResult DisableConfirmed(int id)
         {
             if (Session.Count == 0) 
             {
