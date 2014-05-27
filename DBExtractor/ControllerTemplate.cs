@@ -1066,7 +1066,7 @@ namespace {0}.Controllers
                 RedirectToAction(""Error"");
             }
 
-            return RedirectToAction(""Index"");
+            return View(originalEntity);
 
         }
 
