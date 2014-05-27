@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ControllerTemplate.cs" />
     <Compile Include="DBExtractor.cs" />
+    <Compile Include="FuncionalityConfig.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelAttribute.cs" />
     <Compile Include="Program.cs" />

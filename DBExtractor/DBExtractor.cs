@@ -311,6 +311,14 @@ namespace System.Data.Extraction
                 annotationList.Add(string.Concat("[DataTable(TableName = \"", modelPreConfig.EntityTable, "\")]"));
             }
 
+            if (modelPreConfig.NavMenu)
+            {
+                modelPreConfig.Namespaces.Add("using System.Security.InMemProfile;");
+                annotationList.Add(string.Concat("[Funcionality(FuncionalityGroup = \"", modelPreConfig.FuncionalityGroup, "\"", Environment.NewLine,
+                                                 "                      FuncionalitySubGroup = \"", modelPreConfig.FuncionalitySubGroup, "\"", Environment.NewLine,
+                                                 "                      FuncionalityAccess = \"/", modelPreConfig.EntityName, "\")]"));
+            }
+
             modelPreConfig.Annotations = annotationList;
         }
 
@@ -390,7 +398,7 @@ namespace System.Data.Extraction
 
         #region Public Methods
 
-        public string[] ExtractModelClass(bool serializable, bool validationReady, bool validationMsgReady, bool ropSqlReady, bool gzipReady, bool wcfReady, bool jsonMinReady)
+        public string[] ExtractModelClass(bool serializable, bool validationReady, bool validationMsgReady, bool ropSqlReady, bool gzipReady, bool wcfReady, bool jsonMinReady, FuncionalityConfig funcConfig)
         {
             string[] result = new string[2];
             List<string> defaultNamespaces = new List<string>();
@@ -405,9 +413,17 @@ namespace System.Data.Extraction
                 GzipEnable = gzipReady,
                 WcfEnable = wcfReady,
                 JsonMinEnable = jsonMinReady,
+                NavMenu = (funcConfig != null),
 
                 Namespaces = defaultNamespaces
             };
+
+            if (modelPreConfig.NavMenu)
+            {
+                modelPreConfig.FuncionalityGroup = funcConfig.Group;
+                modelPreConfig.FuncionalitySubGroup = funcConfig.SubGroup;
+                modelPreConfig.FuncionalityAccess = funcConfig.Access;
+            }
 
             result[0] = parseScript(modelPreConfig, scpContent);
             result[1] = modelPreConfig.EntityName;

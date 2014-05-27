@@ -19,6 +19,8 @@ namespace System.Data.Extraction
                 var inputFile = args.First();
                 var classNamespace = args[1];
                 var excepDepth = args[2];
+                var funcGroup = args[3];
+                var funcSubGroup = args[4];
 
                 var serialize = args.Contains("-s");
                 var validate = args.Contains("-v");
@@ -26,6 +28,7 @@ namespace System.Data.Extraction
                 var ropsql = args.Contains("-r");
                 var wcf = args.Contains("-w");
                 var json = args.Contains("-j");
+                var navmenu = args.Contains("-f");
 
                 var controller = args.Contains("-c");
                 var excepSafeController = args.Contains("-ce");
@@ -38,7 +41,11 @@ namespace System.Data.Extraction
                 Thread.CurrentThread.CurrentCulture = culture;
                 Thread.CurrentThread.CurrentUICulture = culture;
 
-                var resultArray = new DBScriptExtractor(inputFile, classNamespace).ExtractModelClass(serialize, validate, valmsg, ropsql, gzip, wcf, json);
+                FuncionalityConfig funcConfig = new FuncionalityConfig();
+                funcConfig.Group = funcGroup;
+                funcConfig.SubGroup = funcSubGroup;
+
+                var resultArray = new DBScriptExtractor(inputFile, classNamespace).ExtractModelClass(serialize, validate, valmsg, ropsql, gzip, wcf, json, funcConfig);
                 var resultModel = resultArray.First();
                 var modelName = resultArray.Last();
 
@@ -74,8 +81,8 @@ namespace System.Data.Extraction
         {
             Console.Clear();
             Console.WriteLine("Use :");
-            Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("DBExtractor [inputfile] [namespace] [exceptiondepth] parameters");
+            Console.WriteLine("-------------------------------------------------------------------------------");
+            Console.WriteLine("DBExtractor [inputfile] [namespace] [exceptiondepth] [funcgroup] [funcsubgroup] parameters");
             Console.WriteLine();
             Console.WriteLine("Parameters :");
             Console.WriteLine("-s  : Extract with serialization enable");
@@ -84,6 +91,7 @@ namespace System.Data.Extraction
             Console.WriteLine("-r  : Extract with RopSql mapping enable");
             Console.WriteLine("-w  : Extract with WCF contract enable");
             Console.WriteLine("-j  : Extract with JSON minimification enable");
+            Console.WriteLine("-f  : Extract with Navigation Menu enable");
             Console.WriteLine();
             Console.WriteLine("-c  : Extract with RopSql based Controller");
             Console.WriteLine("-ce : Extract with RopSql based Controller");

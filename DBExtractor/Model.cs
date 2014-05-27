@@ -14,9 +14,13 @@ namespace System.Data.Extraction
         public bool WcfEnable { get; set; }
         public bool GzipEnable { get; set; }
         public bool JsonMinEnable { get; set; }
+        public bool NavMenu { get; set; }
         public string EntityName { get; set; }
         public string EntityTable { get; set; }
         public string DisplayName { get; set; }
+        public string FuncionalityGroup { get; set; }
+        public string FuncionalitySubGroup { get; set; }
+        public string FuncionalityAccess { get; set; }
         public List<string> Namespaces { get; set; }
         public List<string> Annotations { get; set; }
         public List<ModelAttribute> Attributes { get; set; }
