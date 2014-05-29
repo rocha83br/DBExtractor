@@ -314,8 +314,9 @@ namespace System.Data.Extraction
             if (modelPreConfig.NavMenu)
             {
                 modelPreConfig.Namespaces.Add("using System.Security.InMemProfile;");
-                annotationList.Add(string.Concat("[Funcionality(FuncionalityGroup = \"", modelPreConfig.FuncionalityGroup, "\"", Environment.NewLine,
-                                                 "                      FuncionalitySubGroup = \"", modelPreConfig.FuncionalitySubGroup, "\"", Environment.NewLine,
+                annotationList.Add(string.Concat("[DisplayName(\"", modelPreConfig.EntityName, "\")]"));
+                annotationList.Add(string.Concat("[Funcionality(FuncionalityGroup = \"", modelPreConfig.FuncionalityGroup, "\",", Environment.NewLine, 
+                                                 "                      FuncionalitySubGroup = \"", modelPreConfig.FuncionalitySubGroup, "\",", Environment.NewLine,
                                                  "                      FuncionalityAccess = \"/", modelPreConfig.EntityName, "\")]"));
             }
 

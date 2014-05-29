@@ -381,7 +381,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile))
+                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile.AccessKey))
                 {
                     HttpContext.Response.Redirect(""AccessDenied"");
                     return null;
@@ -409,7 +409,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
+                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile.AccessKey))
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
@@ -430,7 +430,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile.AccessKey))
                 {
                     if (ModelState.IsValid)
                     {
@@ -466,7 +466,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     returnEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -498,7 +498,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     if (ModelState.IsValid)
                     {
@@ -533,7 +533,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     returnEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -565,7 +565,7 @@ namespace {0}.Controllers
             try {    
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     persistAdapter.Delete(filterEntity);
@@ -597,7 +597,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     originalEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -629,7 +629,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -663,7 +663,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     originalEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -695,7 +695,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var updatedEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -756,7 +756,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile.AccessKey))
                     sysRegistry.RegisterRead(filterEntity.Id);
                 else
                 {
@@ -787,7 +787,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
+                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile.AccessKey))
                 return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
@@ -814,7 +814,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile.AccessKey))
                 {
                     if (ModelState.IsValid)
                     {
@@ -850,7 +850,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}();
                     returnEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -882,7 +882,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     if (ModelState.IsValid)
                     {
@@ -919,7 +919,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     returnEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -951,7 +951,7 @@ namespace {0}.Controllers
             try {
                 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     persistAdapter.Delete(filterEntity);
@@ -984,7 +984,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     originalEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1016,7 +1016,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1052,7 +1052,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     originalEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1084,7 +1084,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1148,7 +1148,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_List, currentUser.AccessProfile.AccessKey))
                     sysRegistry.RegisterRead(filterEntity.Id);
                 else
                 {
@@ -1179,7 +1179,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile)) 
+                     && !AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile.AccessKey)) 
                     return RedirectToAction(""AccessDenied"");
             }
             catch(Exception ex)
@@ -1206,7 +1206,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Create, currentUser.AccessProfile.AccessKey))
                 {
                     if (ModelState.IsValid)
                     {
@@ -1248,7 +1248,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}();
                     returnEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1280,7 +1280,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     if (ModelState.IsValid)
                     {
@@ -1323,7 +1323,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     returnEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1355,7 +1355,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Delete, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     persistAdapter.Delete(filterEntity);
@@ -1393,7 +1393,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     originalEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1425,7 +1425,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1466,7 +1466,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     originalEntity = persistAdapter.Get(filterEntity, false) as {1};
@@ -1498,7 +1498,7 @@ namespace {0}.Controllers
             try {
 
                 if ((currentUser != null) 
-                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile))
+                     && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
                     var filterEntity = new {1}() { Id = id };
                     var originalEntity = persistAdapter.Get(filterEntity, false) as {1};
