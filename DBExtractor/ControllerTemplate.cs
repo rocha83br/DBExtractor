@@ -852,7 +852,7 @@ namespace {0}.Controllers
                 if ((currentUser != null) 
                      && AccessValidator.CheckPermission(EntityAccessProfile.{1}_Edit, currentUser.AccessProfile.AccessKey))
                 {
-                    var filterEntity = new {1}();
+                    var filterEntity = new {1}() { Id = id };
                     returnEntity = persistAdapter.Get(filterEntity, false) as {1};
                 }
                 else
