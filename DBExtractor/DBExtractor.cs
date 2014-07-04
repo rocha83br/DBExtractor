@@ -254,7 +254,12 @@ namespace System.Data.Extraction
             else
             {
                 constraintRange = scriptContent.Substring(scriptContent.IndexOf("PRIMARY KEY") + "PRIMARY KEY".Length);
-                constraintRange = constraintRange.Substring(0, constraintRange.IndexOf(","));
+
+                int constraintEnd = constraintRange.IndexOf(",");
+                if (constraintRange.IndexOf(",") < 0)
+                    constraintEnd = constraintRange.IndexOf("\n");
+                
+                constraintRange = constraintRange.Substring(0, constraintEnd);
             }
 
             foreach (var attrib in attributeList)
@@ -281,6 +286,9 @@ namespace System.Data.Extraction
                 case ValidationType.ForeignKey:
                     result = Resources.ValidationMessage.RequiredRelation;
                     break;
+                case ValidationType.Numeric:
+                    result = Resources.ValidationMessage.NumericValue;
+                    break;
             }
 
             return result;
@@ -297,6 +305,7 @@ namespace System.Data.Extraction
             {
                 modelPreConfig.Namespaces.Add("using System.ComponentModel;");
                 modelPreConfig.Namespaces.Add("using System.ComponentModel.DataAnnotations;");
+                modelPreConfig.Namespaces.Add("using System.Text.RegularExpressions;");
             }
 
             if (modelPreConfig.WcfEnable)
@@ -313,7 +322,7 @@ namespace System.Data.Extraction
 
             if (modelPreConfig.NavMenu)
             {
-                modelPreConfig.Namespaces.Add("using System.Security.InMemProfile;");
+                modelPreConfig.Namespaces.Add("using System.Security.InMemProfile.Annotations;");
                 annotationList.Add(string.Concat("[DisplayName(\"", modelPreConfig.EntityName, "\")]"));
                 annotationList.Add(string.Concat("[Funcionality(FuncionalityGroup = \"", modelPreConfig.FuncionalityGroup, "\",", Environment.NewLine, 
                                                  "                      FuncionalitySubGroup = \"", modelPreConfig.FuncionalitySubGroup, "\",", Environment.NewLine,
@@ -380,6 +389,12 @@ namespace System.Data.Extraction
                         }
                         else
                             annotationList.Add(string.Concat("[StringLength(", attrib.StringLength.ToString(), ")]"));
+
+                    var numericTypes = new List<string> { "byte", "short", "int", "long", "decimal" };
+                    var numAttribMsg = string.Format(getValidationMsg(ValidationType.Numeric), attrib.AttributeName);
+                    if (numericTypes.Contains(attrib.AttributeType))
+                        if (modelPreConfig.ValidationMsgEnable)
+                            annotationList.Add(string.Concat("[RegularExpression(\"^[0-9]*\\.?[0-9]+$\", ErrorMessage = \"", numAttribMsg, "\")]"));
                 }
 
                 if (attrib.Composition)

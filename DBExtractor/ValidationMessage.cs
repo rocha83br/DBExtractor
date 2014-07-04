@@ -9,6 +9,7 @@ namespace System.Data.Extraction.Messages
     {
         Required = 1,
         StringLength = 2,
-        ForeignKey = 3
+        ForeignKey = 3,
+        Numeric = 4
     }
 }
