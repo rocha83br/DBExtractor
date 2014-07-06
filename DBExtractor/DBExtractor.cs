@@ -289,6 +289,9 @@ namespace System.Data.Extraction
                 case ValidationType.Numeric:
                     result = Resources.ValidationMessage.NumericValue;
                     break;
+                case ValidationType.NumericInteger:
+                    result = Resources.ValidationMessage.NumericIntegerValue;
+                    break;
             }
 
             return result;
@@ -305,7 +308,6 @@ namespace System.Data.Extraction
             {
                 modelPreConfig.Namespaces.Add("using System.ComponentModel;");
                 modelPreConfig.Namespaces.Add("using System.ComponentModel.DataAnnotations;");
-                modelPreConfig.Namespaces.Add("using System.Text.RegularExpressions;");
             }
 
             if (modelPreConfig.WcfEnable)
@@ -390,11 +392,17 @@ namespace System.Data.Extraction
                         else
                             annotationList.Add(string.Concat("[StringLength(", attrib.StringLength.ToString(), ")]"));
 
-                    var numericTypes = new List<string> { "byte", "short", "int", "long", "decimal" };
+                    var numericTypes = new List<string> { "decimal", "float", "double" };
+                    var numericTypesInt = new List<string> { "byte", "short", "int", "long" };
                     var numAttribMsg = string.Format(getValidationMsg(ValidationType.Numeric), attrib.AttributeName);
-                    if (numericTypes.Contains(attrib.AttributeType))
-                        if (modelPreConfig.ValidationMsgEnable)
-                            annotationList.Add(string.Concat("[RegularExpression(\"^[0-9]*\\.?[0-9]+$\", ErrorMessage = \"", numAttribMsg, "\")]"));
+                    var numAttribMsgInt = string.Format(getValidationMsg(ValidationType.NumericInteger), attrib.AttributeName);
+                    if (modelPreConfig.ValidationMsgEnable)
+                    {
+                        if (numericTypes.Contains(attrib.AttributeType))
+                            annotationList.Add(string.Concat("[RegularExpression(\"^[0-9]*\\\\.?\\\\,?[0-9]+$\", ErrorMessage = \"", numAttribMsg, "\")]"));
+                        else if (numericTypesInt.Contains(attrib.AttributeType))
+                            annotationList.Add(string.Concat("[RegularExpression(\"^[0-9]*$\", ErrorMessage = \"", numAttribMsgInt, "\")]"));
+                    }
                 }
 
                 if (attrib.Composition)
