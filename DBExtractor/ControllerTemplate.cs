@@ -820,6 +820,7 @@ namespace {0}.Controllers
                     {
                         persistAdapter.Create(newEntity, false);
                         sysRegistry.RegisterCreate(newEntity.Id);
+                        TempData[""UserMessage""] = MessageRepository.EntityEffective_Create;
                         return RedirectToAction(""Index"");
                     }
                 }
@@ -890,6 +891,7 @@ namespace {0}.Controllers
                         var originalEntity = persistAdapter.Get(filterEntity, false);
                         persistAdapter.Edit(editedEntity, filterEntity, false);
                         sysRegistry.RegisterEdit(originalEntity, editedEntity);
+                        TempData[""UserMessage""] = MessageRepository.EntityEffective_Edit;
                         return RedirectToAction(""Index"");
                     }
                 }
@@ -956,6 +958,7 @@ namespace {0}.Controllers
                     var filterEntity = new {1}() { Id = id };
                     persistAdapter.Delete(filterEntity);
                     sysRegistry.RegisterDelete(filterEntity.Id);
+                    TempData[""UserMessage""] = MessageRepository.EntityEffective_Delete;
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -1024,6 +1027,7 @@ namespace {0}.Controllers
                     updatedEntity.Active = true;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
                     sysRegistry.RegisterEdit(originalEntity, updatedEntity);
+                    TempData[""UserMessage""] = MessageRepository.EntityEffective_Enable;
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
@@ -1092,6 +1096,7 @@ namespace {0}.Controllers
                     updatedEntity.Active = false;
                     persistAdapter.Edit(updatedEntity, filterEntity, false);
                     sysRegistry.RegisterEdit(originalEntity, updatedEntity);
+                    TempData[""UserMessage""] = MessageRepository.EntityEffective_Disable;
                 }
                 else
                     return RedirectToAction(""AccessDenied"");
