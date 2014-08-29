@@ -40,10 +40,14 @@ namespace System.Data.Extraction
                 CultureInfo culture = new CultureInfo(ConfigurationSettings.AppSettings["Culture"]);
                 Thread.CurrentThread.CurrentCulture = culture;
                 Thread.CurrentThread.CurrentUICulture = culture;
+                FuncionalityConfig funcConfig = null;
 
-                FuncionalityConfig funcConfig = new FuncionalityConfig();
-                funcConfig.Group = funcGroup;
-                funcConfig.SubGroup = funcSubGroup;
+                if (navmenu)
+                {
+                    funcConfig = new FuncionalityConfig();
+                    funcConfig.Group = funcGroup;
+                    funcConfig.SubGroup = funcSubGroup;
+                }
 
                 var resultArray = new DBScriptExtractor(inputFile, classNamespace).ExtractModelClass(serialize, validate, valmsg, ropsql, gzip, wcf, json, funcConfig);
                 var resultModel = resultArray.First();
