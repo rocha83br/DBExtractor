@@ -90,7 +90,7 @@ namespace System.Data.Extraction
             else if (scriptDataType.Contains("DATETIME"))
                 result = "DateTime";
 
-            if (nullable)
+            if (nullable && (result != "string"))
                 result = string.Concat(result, "?");
 
             return result;
@@ -143,13 +143,14 @@ namespace System.Data.Extraction
                 var newAttribute = new ModelAttribute();
                 var attribConfigArray = attrib.Trim().Split(' ');
                 var requiredAttrib = attrib.Contains("NOT NULL");
+                var identityAttrib = attrib.Contains("IDENTITY") || attrib.Contains("AUTO_INCREMENT");
 
                 newAttribute.Required = requiredAttrib;
+                newAttribute.AutoNumber = identityAttrib;
                 newAttribute.AttributeColumn = attribConfigArray[0].Replace("`", string.Empty)
                                                                    .Replace("[", string.Empty).Replace("]", string.Empty).Trim();
                 newAttribute.AttributeName = getPascalCase(newAttribute.AttributeColumn);
-                newAttribute.AttributeType = getAttributeType(attribConfigArray[1], !requiredAttrib);
-                newAttribute.AutoNumber = attrib.Contains("IDENTITY") || attrib.Contains("AUTO_INCREMENT");
+                newAttribute.AttributeType = getAttributeType(attribConfigArray[1], !(requiredAttrib && identityAttrib));
                 newAttribute.StringLength = getAttribStringLen(attribConfigArray[1]);
 
                 result.Add(newAttribute);
@@ -400,7 +401,7 @@ namespace System.Data.Extraction
                     var numericTypesInt = new List<string> { "byte", "short", "int", "long" };
                     var numAttribMsg = string.Format(getValidationMsg(ValidationType.Numeric), attrib.AttributeName);
                     var numAttribMsgInt = string.Format(getValidationMsg(ValidationType.NumericInteger), attrib.AttributeName);
-                    if (modelPreConfig.ValidationMsgEnable)
+                    if (attrib.Required && modelPreConfig.ValidationMsgEnable)
                     {
                         if (numericTypes.Contains(attrib.AttributeType))
                             annotationList.Add(string.Concat("[RegularExpression(\"^[0-9]*\\\\.?\\\\,?[0-9]+$\", ErrorMessage = \"", numAttribMsg, "\")]"));
