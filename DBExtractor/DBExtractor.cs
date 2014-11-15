@@ -64,7 +64,7 @@ namespace System.Data.Extraction
             return entityName;
         }
 
-        private string getAttributeType(string scriptDataType)
+        private string getAttributeType(string scriptDataType, bool nullable)
         {
             string result = string.Empty;
             scriptDataType = scriptDataType.ToUpper();
@@ -89,6 +89,9 @@ namespace System.Data.Extraction
                 result = "bool";
             else if (scriptDataType.Contains("DATETIME"))
                 result = "DateTime";
+
+            if (nullable)
+                result = string.Concat(result, "?");
 
             return result;
         }
@@ -139,12 +142,13 @@ namespace System.Data.Extraction
             {
                 var newAttribute = new ModelAttribute();
                 var attribConfigArray = attrib.Trim().Split(' ');
+                var requiredAttrib = attrib.Contains("NOT NULL");
 
+                newAttribute.Required = requiredAttrib;
                 newAttribute.AttributeColumn = attribConfigArray[0].Replace("`", string.Empty)
                                                                    .Replace("[", string.Empty).Replace("]", string.Empty).Trim();
                 newAttribute.AttributeName = getPascalCase(newAttribute.AttributeColumn);
-                newAttribute.AttributeType = getAttributeType(attribConfigArray[1]);
-                newAttribute.Required = attrib.Contains("NOT NULL");
+                newAttribute.AttributeType = getAttributeType(attribConfigArray[1], !requiredAttrib);
                 newAttribute.AutoNumber = attrib.Contains("IDENTITY") || attrib.Contains("AUTO_INCREMENT");
                 newAttribute.StringLength = getAttribStringLen(attribConfigArray[1]);
 
