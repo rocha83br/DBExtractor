@@ -150,7 +150,7 @@ namespace System.Data.Extraction
                 newAttribute.AttributeColumn = attribConfigArray[0].Replace("`", string.Empty)
                                                                    .Replace("[", string.Empty).Replace("]", string.Empty).Trim();
                 newAttribute.AttributeName = getPascalCase(newAttribute.AttributeColumn);
-                newAttribute.AttributeType = getAttributeType(attribConfigArray[1], !(requiredAttrib && identityAttrib));
+                newAttribute.AttributeType = getAttributeType(attribConfigArray[1], (!requiredAttrib && !identityAttrib));
                 newAttribute.StringLength = getAttribStringLen(attribConfigArray[1]);
 
                 result.Add(newAttribute);
